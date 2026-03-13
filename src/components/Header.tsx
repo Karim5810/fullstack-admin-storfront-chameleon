@@ -1,0 +1,221 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useCommerce } from '../contexts/CommerceContext';
+import { useSiteContent } from '../contexts/SiteContentContext';
+import SmartLink from './SmartLink';
+
+export default function Header() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const { user, isAuthenticated, signOut } = useAuth();
+  const { cartCount, wishlistCount } = useCommerce();
+  const { settings } = useSiteContent();
+  const header = settings.header;
+  const navbar = settings.navbar;
+  const visibleNavItems = navbar.navItems.filter((item) => item.isVisible);
+
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!searchQuery.trim()) {
+      return;
+    }
+
+    navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
+  return (
+    <>
+      <header>
+        <div className="h-inner">
+          <button type="button" className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(true)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+
+          <Link to="/" className="logo">
+            <img src="/icon-192.png" alt={header.logoTitle} style={{ height: '40px', width: 'auto' }} />
+            <div className="logo-words" style={{ marginLeft: '10px' }}>
+              <span className="logo-ar">{header.logoTitle}</span>
+              <span className="logo-sub">{header.logoSubtitle}</span>
+            </div>
+          </Link>
+
+          <form className="search-wrap" onSubmit={handleSearch}>
+            <span className="s-cat">
+              {header.allCategoriesLabel}
+              <svg viewBox="0 0 24 24">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+              </svg>
+            </span>
+            <input
+              type="text"
+              placeholder={header.searchPlaceholder}
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+            />
+            <button type="submit" className="s-btn">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" stroke="white" strokeWidth="2" fill="none" />
+                <path d="M21 21l-4.35-4.35" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" />
+              </svg>
+              {header.searchButtonLabel}
+            </button>
+          </form>
+
+          <div className="h-actions">
+            <Link to="/account" className="h-act">
+              <svg viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              {header.accountLabel}
+            </Link>
+            <Link to="/orders" className="h-act">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+              {header.ordersLabel}
+            </Link>
+            <Link to="/wishlist" className="h-act">
+              <svg viewBox="0 0 24 24">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+              {header.wishlistLabel}
+              {wishlistCount > 0 ? <span className="badge">{wishlistCount}</span> : null}
+            </Link>
+            <Link to="/cart" className="h-act">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+              </svg>
+              {header.cartLabel}
+              {cartCount > 0 ? <span className="badge">{cartCount}</span> : null}
+            </Link>
+            <div className="h-divider hidden md:block" />
+          </div>
+
+          <div className="h-ctas">
+            {isAuthenticated && user ? (
+              <>
+                <span className="px-3 py-2 text-[0.82rem] text-(--chrome2)">
+                  {header.welcomePrefix} {user.name}
+                </span>
+                {user.role === 'admin' ? (
+                  <Link to="/admin" className="btn-ghost">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M3 13h8V3H3v10zm10 8h8v-6h-8v6zm0-18v8h8V3h-8zM3 21h8v-6H3v6z" />
+                    </svg>
+                    {header.adminLabel}
+                  </Link>
+                ) : null}
+                <button type="button" onClick={handleSignOut} className="btn-fire">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z" />
+                  </svg>
+                  {header.logoutLabel}
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn-ghost">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z" />
+                  </svg>
+                  {header.loginLabel}
+                </Link>
+                <Link to="/register" className="btn-fire">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                  {header.registerLabel}
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={() => setIsMobileMenuOpen(false)} />
+      <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-header">
+          <Link to="/" className="logo" onClick={() => setIsMobileMenuOpen(false)}>
+            <img src="/icon-192.png" alt={header.logoTitle} style={{ height: '32px', width: 'auto' }} />
+            <div className="logo-words" style={{ marginLeft: '10px' }}>
+              <span className="logo-ar">{header.logoTitle}</span>
+            </div>
+          </Link>
+          <button type="button" className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="mobile-menu-content">
+          <div className="mobile-menu-section">
+            {isAuthenticated && user ? (
+              <>
+                <div className="mb-3 px-3 py-2 text-center text-[0.82rem] text-(--chrome2)">
+                  {header.welcomePrefix} {user.name}
+                </div>
+                {user.role === 'admin' ? (
+                  <Link to="/admin" className="btn-ghost mb-3 w-full justify-center" onClick={() => setIsMobileMenuOpen(false)}>
+                    {header.adminLabel}
+                  </Link>
+                ) : null}
+                <button
+                  type="button"
+                  onClick={() => {
+                    void handleSignOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="btn-fire w-full justify-center"
+                >
+                  {header.logoutLabel}
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn-ghost mb-3 w-full justify-center" onClick={() => setIsMobileMenuOpen(false)}>
+                  {header.loginLabel}
+                </Link>
+                <Link to="/register" className="btn-fire w-full justify-center" onClick={() => setIsMobileMenuOpen(false)}>
+                  {header.registerLabel}
+                </Link>
+              </>
+            )}
+          </div>
+
+          <div className="mobile-menu-section">
+            <h4 className="mobile-menu-title">{navbar.mobileMenuTitle}</h4>
+            {visibleNavItems.map((item) => (
+              <SmartLink key={item.id} href={item.href} onClick={() => setIsMobileMenuOpen(false)}>
+                {item.label}
+              </SmartLink>
+            ))}
+            <SmartLink href={navbar.ctaHref} onClick={() => setIsMobileMenuOpen(false)}>
+              {navbar.ctaLabel}
+            </SmartLink>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
