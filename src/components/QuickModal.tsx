@@ -102,7 +102,7 @@ export default function QuickModal({ isOpen, onClose, product }: QuickModalProps
                 جودة معتمدة للتشغيل الصناعي
               </span>
             </div>
-            <Link to={getProductPath(product)} className="text-[var(--o)] font-semibold text-sm inline-flex mt-4">
+            <Link to={getProductPath(product)} className="text-(--o) font-semibold text-sm inline-flex mt-4">
               عرض صفحة المنتج
             </Link>
           </div>

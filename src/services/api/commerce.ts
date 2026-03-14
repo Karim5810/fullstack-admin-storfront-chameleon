@@ -17,6 +17,18 @@ import type {
   QuoteRequest,
   WishlistItem,
 } from '../../types';
+
+type QuoteApi = {
+  getAll: () => Promise<QuoteRequest[]>;
+  create: (input: Omit<QuoteRequest, 'id' | 'status' | 'createdAt'>) => Promise<QuoteRequest>;
+  update: (id: string, input: Partial<QuoteRequest>) => Promise<QuoteRequest>;
+};
+
+type B2BApi = {
+  getAll: () => Promise<B2BRegistration[]>;
+  register: (input: Omit<B2BRegistration, 'id' | 'status' | 'createdAt'>) => Promise<B2BRegistration>;
+  update: (id: string, input: Partial<B2BRegistration>) => Promise<B2BRegistration>;
+};
 import { accountsApi } from './accounts';
 import { catalogApi } from './catalog';
 import {
@@ -496,9 +508,11 @@ export const commerceApi = {
             ...validated,
             status: 'new',
             createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           };
           setStoredContactMessages([nextMessage, ...getStoredContactMessages()]);
           return nextMessage;
+
         },
       ),
   },
@@ -549,11 +563,35 @@ export const commerceApi = {
             ...validated,
             status: 'new',
             createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           };
           setStoredQuoteRequests([nextRequest, ...getStoredQuoteRequests()]);
           return nextRequest;
         },
       ),
+      update: async (id: string, input: Partial<QuoteRequest>): Promise<QuoteRequest> =>
+        fromSupabaseOrFallback(
+          async () => {
+            const { data, error } = await supabase
+              .from('quote_requests')
+              .update(input)
+              .eq('id', id)
+              .select('*')
+              .single();
+            if (error) {
+              throw error;
+            }
+            return toQuoteRequest(data as DatabaseRow);
+          },
+          async () => {
+            const current = getStoredQuoteRequests();
+            const existing = current.find((q) => q.id === id);
+            if (!existing) throw new Error('Quote not found.');
+            const updated: QuoteRequest = { ...existing, ...input, updatedAt: new Date().toISOString() };
+            setStoredQuoteRequests([updated, ...current.filter((q) => q.id !== id)]);
+            return updated;
+          },
+        ),
   },
   newsletter: {
     getAll: async (): Promise<NewsletterSubscription[]> =>
@@ -575,37 +613,28 @@ export const commerceApi = {
     subscribe: async (email: string): Promise<NewsletterSubscription> =>
       fromSupabaseOrFallback(
         async () => {
-          const validatedEmail = NewsletterSchema.parse({ email }).email;
-          const { data, error } = await supabase
-            .from('newsletter_subscribers')
-            .upsert({ email: validatedEmail }, { onConflict: 'email' })
-            .select('*')
-            .single();
-
+          const validated = NewsletterSchema.parse({ email });
+          const payload = { email: validated.email };
+          const { data, error } = await supabase.from('newsletter_subscribers').insert(payload).select('*').single();
           if (error) {
             throw error;
           }
-
           return toNewsletterSubscription(data as DatabaseRow);
         },
         async () => {
-          const validatedEmail = NewsletterSchema.parse({ email }).email;
-          const existing = getStoredNewsletterSubscriptions().find((entry) => entry.email === validatedEmail);
-
-          if (existing) {
-            return existing;
-          }
-
-          const nextEntry = {
-            id: generateId('newsletter'),
-            email: validatedEmail,
+          const validated = NewsletterSchema.parse({ email });  
+          const nextEntry: NewsletterSubscription = {
+            id: generateId('news'),
+            email: validated.email,
             createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           };
           setStoredNewsletterSubscriptions([nextEntry, ...getStoredNewsletterSubscriptions()]);
           return nextEntry;
-        },
+        }
       ),
   },
+
   b2b: {
     getAll: async (): Promise<B2BRegistration[]> =>
       fromSupabaseOrFallback(
@@ -658,6 +687,29 @@ export const commerceApi = {
           return nextEntry;
         },
       ),
+      update: async (id: string, input: Partial<B2BRegistration>): Promise<B2BRegistration> =>
+        fromSupabaseOrFallback(
+          async () => {
+            const { data, error } = await supabase
+              .from('b2b_registrations')
+              .update(input)
+              .eq('id', id)
+              .select('*')
+              .single();
+            if (error) {
+              throw error;
+            }
+            return toB2BRegistration(data as DatabaseRow);
+          },
+          async () => {
+            const current = getStoredB2BRegistrations();
+            const existing = current.find((b) => b.id === id);
+            if (!existing) throw new Error('B2B registration not found.');
+            const updated: B2BRegistration = { ...existing, ...input, createdAt: existing.createdAt };
+            setStoredB2BRegistrations([updated, ...current.filter((b) => b.id !== id)]);
+            return updated;
+          }
+        ),
   },
   admin: {
     getDashboard: async (): Promise<AdminDashboardData> => {

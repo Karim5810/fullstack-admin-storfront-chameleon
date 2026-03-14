@@ -4,6 +4,7 @@ import { isSupabaseConfigured } from '../../supabaseClient';
 import { accountsApi } from './accounts';
 import { catalogApi } from './catalog';
 import { commerceApi } from './commerce';
+import { imageRegistryApi } from './imageRegistry';
 import { siteContentApi } from './siteContent';
 
 export const api = {
@@ -11,6 +12,7 @@ export const api = {
   ...accountsApi,
   ...commerceApi,
   ...siteContentApi,
+  imageRegistry: imageRegistryApi,
 };
 
 export const apiMeta = {

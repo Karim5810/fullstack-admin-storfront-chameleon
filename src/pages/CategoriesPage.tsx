@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
+import { useImageRegistry } from '../contexts/ImageRegistryContext';
 import type { Category, Product } from '../types';
 
 export default function CategoriesPage() {
+  const { getUrl } = useImageRegistry();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,16 +56,22 @@ export default function CategoriesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category) => (
+            {categories.map((category, index) => {
+              const imageUrl = category.image || getUrl(`Cat-${index + 1}`);
+              return (
               <Link
                 key={category.id}
                 to={`/category/${category.slug}`}
                 className="bg-(--d2) border border-(--border) rounded-2xl p-6 hover:border-(--o) hover:-translate-y-1 transition-all"
               >
-                <div className="w-14 h-14 rounded-2xl bg-[rgba(255,107,0,0.12)] flex items-center justify-center text-(--o) mb-5">
-                  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                  </svg>
+                <div className="w-14 h-14 rounded-2xl bg-[rgba(255,107,0,0.12)] flex items-center justify-center overflow-hidden mb-5">
+                  {imageUrl ? (
+                    <img src={imageUrl} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <svg className="w-7 h-7 text-(--o)" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                    </svg>
+                  )}
                 </div>
                 <h2 className="text-xl font-bold text-white mb-2">{category.name}</h2>
                 <p className="text-(--muted2) text-sm mb-4 leading-7">
@@ -74,7 +82,8 @@ export default function CategoriesPage() {
                   <span className="text-(--o) font-bold">استعرض الفئة</span>
                 </div>
               </Link>
-            ))}
+            );
+            })}
           </div>
         )}
       </div>

@@ -2,11 +2,11 @@ import { useSiteContent } from '../../contexts/SiteContentContext';
 import SmartLink from '../SmartLink';
 
 const themeStyles = {
-  orange: 'linear-gradient(135deg,#1a1008,#2d1f05)',
-  green: 'linear-gradient(135deg,#0f1a0f,#152015)',
-  blue: 'linear-gradient(135deg,#0f0f20,#151530)',
-  gold: 'linear-gradient(135deg,#1a1008,#251507)',
-  red: 'linear-gradient(135deg,#150818,#20101f)',
+  orange: 'linear-gradient(135deg,var(--d2),rgba(255,107,0,0.08))',
+  green: 'linear-gradient(135deg,var(--d2),rgba(16,185,129,0.08))',
+  blue: 'linear-gradient(135deg,var(--d2),rgba(59,130,246,0.08))',
+  gold: 'linear-gradient(135deg,var(--d2),rgba(240,168,0,0.10))',
+  red: 'linear-gradient(135deg,var(--d2),rgba(248,113,113,0.08))',
 } as const;
 
 export default function PromoGrid() {

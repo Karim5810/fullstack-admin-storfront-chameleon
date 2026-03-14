@@ -84,36 +84,36 @@ export default function Products() {
 
   return (
     <div className="page-enter">
-      <div className="bg-[var(--d2)] border-b border-[var(--border)] py-4">
+      <div className="bg-(--d2) border-b border-(--border) py-4">
         <div className="container">
           <div className="breadcrumb">
-            <Link to="/" className="hover:text-[var(--o)] transition-colors">
+            <Link to="/" className="hover:text-(--o) transition-colors">
               الرئيسية
             </Link>
-            <span className="mx-2 text-[var(--muted)]">/</span>
-            <span className="text-[var(--chrome)]">جميع المنتجات</span>
+              <span className="mx-2 text-(--muted2)">/</span>
+              <span className="text-(--chrome)">جميع المنتجات</span>
           </div>
         </div>
       </div>
 
       <div className="container py-8">
         {error ? (
-          <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+          <div className="mb-6 rounded-2xl border border-(--border) bg-(--d3) px-4 py-3 text-sm text-(--muted2)">
             {error}
           </div>
         ) : null}
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="col-span-1">
-            <div className="bg-[var(--d2)] rounded-xl p-6 sticky top-40 border border-[var(--border)]">
+            <div className="bg-(--d2) rounded-xl p-6 sticky top-40 border border-(--border)">
               <h3 className="text-lg font-bold text-white mb-6">التصفية</h3>
 
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-[var(--chrome)] mb-2">الترتيب</label>
+                <label className="block text-sm font-semibold text-(--chrome) mb-2">الترتيب</label>
                 <select
                   value={sort}
                   onChange={(event) => updateFilter('sort', event.target.value)}
-                  className="w-full bg-[var(--d3)] border border-[var(--border)] text-[var(--chrome)] p-2 rounded text-sm focus:outline-none focus:border-[var(--o)]"
+                  className="w-full bg-(--d3) border border-(--border) text-(--chrome) p-2 rounded text-sm focus:outline-none focus:border-(--o)"
                 >
                   <option value="newest">الأحدث</option>
                   <option value="price_asc">السعر من الأقل للأعلى</option>
@@ -123,21 +123,21 @@ export default function Products() {
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-[var(--chrome)] mb-2">نطاق السعر</label>
-                <div className="flex gap-2 mb-3">
+                <label className="block text-sm font-semibold text-(--chrome) mb-2">نطاق السعر</label>
+                <div className="flex gap-2 mb-3 flex-wrap">
                   <input
                     type="number"
                     placeholder="من"
                     value={priceMin || ''}
                     onChange={(event) => updateFilter('priceMin', event.target.value)}
-                    className="flex-1 bg-[var(--d3)] border border-[var(--border)] text-[var(--chrome)] p-2 rounded text-sm focus:outline-none focus:border-[var(--o)]"
+                    className="flex-1 bg-(--d3) border border-(--border) text-(--chrome) p-2 rounded text-sm focus:outline-none focus:border-(--o)"
                   />
                   <input
                     type="number"
                     placeholder="إلى"
                     value={priceMax === 999999 ? '' : priceMax}
                     onChange={(event) => updateFilter('priceMax', event.target.value)}
-                    className="flex-1 bg-[var(--d3)] border border-[var(--border)] text-[var(--chrome)] p-2 rounded text-sm focus:outline-none focus:border-[var(--o)]"
+                    className="flex-1 bg-(--d3) border border-(--border) text-(--chrome) p-2 rounded text-sm focus:outline-none focus:border-(--o)"
                   />
                 </div>
                 <button
@@ -146,19 +146,19 @@ export default function Products() {
                     updateFilter('priceMin', '');
                     updateFilter('priceMax', '');
                   }}
-                  className="text-xs text-[var(--o)] hover:underline"
+                  className="text-xs text-(--o) hover:underline"
                 >
                   مسح النطاق
                 </button>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-[var(--chrome)] mb-2">الفئة</label>
+                <label className="block text-sm font-semibold text-(--chrome) mb-2">الفئة</label>
                 <button
                   type="button"
                   onClick={() => updateFilter('category', '')}
                   className={`block w-full text-right p-2 rounded text-sm mb-2 transition-colors ${
-                    !category ? 'bg-[var(--d3)] text-[var(--o)]' : 'text-[var(--muted2)] hover:text-[var(--chrome)]'
+                    !category ? 'bg-(--d3) text-(--o)' : 'text-(--muted2) hover:text-(--chrome)'
                   }`}
                 >
                   جميع الفئات
@@ -171,8 +171,8 @@ export default function Products() {
                       onClick={() => updateFilter('category', item.slug)}
                       className={`block w-full text-right p-2 rounded text-sm transition-colors ${
                         category === item.slug
-                          ? 'bg-[var(--d3)] text-[var(--o)]'
-                          : 'text-[var(--muted2)] hover:text-[var(--chrome)]'
+                            ? 'bg-(--d3) text-(--o)'
+                            : 'text-(--muted2) hover:text-(--o)'
                       }`}
                     >
                       {item.name}
@@ -185,8 +185,8 @@ export default function Products() {
 
           <div className="col-span-1 lg:col-span-3">
             <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
-              <h1 className="text-2xl font-bold text-white">
-                جميع المنتجات <span className="text-sm text-[var(--muted2)]">({filteredProducts.length})</span>
+              <h1 className="text-2xl font-bold ">
+                جميع المنتجات <span className="text-sm text-(--muted2)">({filteredProducts.length})</span>
               </h1>
             </div>
 

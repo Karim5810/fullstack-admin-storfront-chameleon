@@ -148,8 +148,8 @@ export interface QuoteRequest {
   description: string;
   status: 'new' | 'reviewing' | 'quoted' | 'closed';
   createdAt: string;
+  updatedAt?: string;
 }
-
 export interface ContactMessage {
   id: string;
   userId?: string | null;
@@ -160,12 +160,14 @@ export interface ContactMessage {
   message: string;
   status: 'new' | 'open' | 'resolved';
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface NewsletterSubscription {
   id: string;
   email: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface B2BRegistration {
@@ -222,6 +224,8 @@ export interface HeroSlide {
   eyebrow: string;
   title: string;
   description: string;
+  /** Optional background image URL for the hero slide */
+  image?: string;
   primaryLabel: string;
   primaryHref: string;
   secondaryLabel: string;

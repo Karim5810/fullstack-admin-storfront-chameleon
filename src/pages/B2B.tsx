@@ -55,7 +55,7 @@ export default function B2B() {
                   <p className="text-(--muted2) text-sm">{item.desc}</p>
                 </div>
                 {i < 2 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-[2px] bg-(--border)" />
+                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-(--border)" />
                 )}
               </div>
             ))}

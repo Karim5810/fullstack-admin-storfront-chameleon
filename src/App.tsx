@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { CommerceProvider } from './contexts/CommerceContext';
+import { ImageRegistryProvider } from './contexts/ImageRegistryContext';
 import { SiteContentProvider } from './contexts/SiteContentContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { AppErrorBoundary } from './components/AppErrorBoundary';
 import { RequireAdmin, RequireAuth } from './components/RouteGuards';
 import Topbar from './components/Topbar';
@@ -176,16 +178,20 @@ function AppShell() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <SiteContentProvider>
-        <CommerceProvider>
-          <Router>
-            <AppErrorBoundary>
-              <AppShell />
-            </AppErrorBoundary>
-          </Router>
-        </CommerceProvider>
-      </SiteContentProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <SiteContentProvider>
+          <ImageRegistryProvider>
+            <CommerceProvider>
+              <Router>
+              <AppErrorBoundary>
+                <AppShell />
+              </AppErrorBoundary>
+              </Router>
+            </CommerceProvider>
+          </ImageRegistryProvider>
+        </SiteContentProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

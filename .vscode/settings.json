@@ -1,7 +1,12 @@
 {
-    "builder.serverUrl": "http://localhost:3000",
-    "builder.command": "npm run dev",
-    "builder.runDevServer": false,
-    "builder.autoDetectDevServer": true,
-    "builder.launchType": "editor"
+  "builder.serverUrl": "http://localhost:3000",
+  "builder.command": "npm run dev",
+  "builder.runDevServer": false,
+  "builder.autoDetectDevServer": true,
+  "builder.launchType": "editor",
+
+  // Tailwind uses @apply and other custom at-rules that the built-in CSS
+  // validator does not understand. Ignore those lints so we don't get hundreds
+  // of false-positive warnings for valid Tailwind code.
+  "css.lint.unknownAtRules": "ignore"
 }

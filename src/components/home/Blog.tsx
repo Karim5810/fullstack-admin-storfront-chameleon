@@ -36,7 +36,10 @@ export default function Blog({ posts }: BlogProps) {
                 <div
                   className="blog-thumb-bg"
                   style={{
-                    background: index === 0 ? 'linear-gradient(135deg,#1a1008,#2d1f05)' : 'linear-gradient(135deg,#08180f,#0f2518)',
+                    background:
+                      index === 0
+                        ? 'linear-gradient(135deg,var(--d2),rgba(255,107,0,0.06))'
+                        : 'linear-gradient(135deg,var(--d2),rgba(34,197,94,0.05))',
                     color: 'rgba(255,107,0,0.22)',
                     height: index === 0 ? undefined : '170px',
                   }}

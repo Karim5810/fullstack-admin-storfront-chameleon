@@ -62,38 +62,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     let isMounted = true;
+    let isRefreshing = false;
 
-    void refreshUser()
-      .catch(() => {
-        if (isMounted) {
-          setUser(null);
-        }
-      })
-      .finally(() => {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      });
+    const safeRefresh = async () => {
+      // Guard against concurrent refresh calls stacking up
+      if (isRefreshing || !isMounted) return;
+      isRefreshing = true;
+      setIsLoading(true);
+      try {
+        await refreshUser();
+      } catch {
+        if (isMounted) setUser(null);
+      } finally {
+        isRefreshing = false;
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    void safeRefresh();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-      if (!isMounted) {
+    } = supabase.auth.onAuthStateChange((event) => {
+      // TOKEN_REFRESHED is an internal Supabase housekeeping event —
+      // calling refreshUser() here creates a loop:
+      //   refreshUser() → session touched → TOKEN_REFRESHED → refreshUser() → …
+      // INITIAL_SESSION is already handled by the safeRefresh() call above,
+      // so there's no need to react to it a second time.
+      if (!isMounted || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
         return;
       }
 
-      setIsLoading(true);
-      void refreshUser()
-        .catch(() => {
-          if (isMounted) {
-            setUser(null);
-          }
-        })
-        .finally(() => {
-          if (isMounted) {
-            setIsLoading(false);
-          }
-        });
+      void safeRefresh();
     });
 
     return () => {

@@ -24,11 +24,11 @@ export default function ProductCard({
 }: ProductCardProps) {
   return (
     <div className={['prod-card', className].filter(Boolean).join(' ')}>
-      <Link to={getProductPath(product)} className={['prod-img', imageClassName].filter(Boolean).join(' ')} style={{ background: 'var(--d2)' }}>
+      <Link to={getProductPath(product)} className={['prod-img', imageClassName].filter(Boolean).join(' ')}>
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-full object-contain p-4"
+          className="w-full h-full object-contain p-4 bg-white"
           referrerPolicy="no-referrer"
         />
         {(product.isHot || product.isNew || product.isSale) && (

@@ -55,6 +55,119 @@
   ::-webkit-scrollbar-thumb { background: var(--o); border-radius: 2px; }
 }
 
+@layer base {
+  html.theme-light {
+    --dark: #f3f4f6;
+    --d1: #ffffff;
+    --d2: #f9fafb;
+    --d3: #f3f4f6;
+    --d4: #e5e7eb;
+    --d5: #e5e7eb;
+    --chrome: #0f172a;
+    --chrome2: #020617;
+    --muted: #6b7280;
+    --muted2: #4b5563;
+    --border: rgba(148, 163, 184, 0.5);
+    --border2: rgba(249, 115, 22, 0.35);
+  }
+
+  html.theme-light body {
+    background: #f3f4f6;
+    color: #020617;
+  }
+}
+
+@layer components {
+  html.theme-light .topbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgb(226 232 240);
+  }
+
+  html.theme-light header {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgb(226 232 240);
+  }
+
+  html.theme-light nav {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgb(226 232 240);
+  }
+
+  html.theme-light .hero,
+  html.theme-light .products-section,
+  html.theme-light .services-section,
+  html.theme-light .brands-section,
+  html.theme-light .deals-section,
+  html.theme-light .cert-section,
+  html.theme-light .stats-section,
+  html.theme-light .cta-section,
+  html.theme-light .blog-section,
+  html.theme-light .newsletter-section,
+  html.theme-light .app-section {
+    background-color: #f8fafc; /* slate-50 */
+  }
+
+  html.theme-light footer {
+    background-color: #ffffff;
+    border-top: 1px solid rgb(226 232 240);
+  }
+
+  html.theme-light .prod-card,
+  html.theme-light .svc-card,
+  html.theme-light .nl-box,
+  html.theme-light .stats-card,
+  html.theme-light .deals-header-card,
+  html.theme-light .cat-tile,
+  html.theme-light .blog-card,
+  html.theme-light .app-box {
+    background-color: #ffffff;
+    border: 1px solid rgb(226 232 240);
+  }
+
+  html.theme-light .h-act,
+  html.theme-light .tb-item {
+    color: #374151; /* slate-700 */
+  }
+
+  /* Hero + banner in light mode */
+  html.theme-light .hero {
+    background-color: #ffffff;
+  }
+
+  html.theme-light .s1-bg {
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 50%, rgba(251,146,60,0.18) 0%, transparent 70%),
+      linear-gradient(160deg, #f9fafb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  }
+
+  html.theme-light .s2-bg {
+    background:
+      radial-gradient(ellipse 70% 60% at 65% 40%, rgba(248,113,113,0.16) 0%, transparent 70%),
+      linear-gradient(160deg, #f9fafb, #f3f4f6, #e5e7eb);
+  }
+
+  html.theme-light .s3-bg {
+    background:
+      radial-gradient(ellipse 70% 60% at 60% 50%, rgba(59,130,246,0.14) 0%, transparent 70%),
+      linear-gradient(160deg, #f9fafb, #f3f4f6, #e5e7eb);
+  }
+
+  /* Dark text for section headings in light mode */
+  html.theme-light .sec-title,
+  html.theme-light .blog-title,
+  html.theme-light .svc-name,
+  html.theme-light .deals-info h2,
+  html.theme-light .nl-box h2,
+  html.theme-light .app-text h2 {
+    color: #0f172a; /* slate-900 */
+  }
+
+  /* Category tiles: keep labels readable in light mode */
+  html.theme-light .cat-tile-name {
+    color: #0f172a; /* slate-900 */
+  }
+}
+
 @layer components {
   /* Page Animation */
   .page-enter { animation: pageIn 0.4s ease-out; }
@@ -159,10 +272,10 @@
   .slide-layer { @apply absolute inset-0; }
   .slide-gradient { @apply absolute inset-0; }
   .slide-content { @apply relative z-10 px-6 md:px-[80px] max-w-[680px]; }
-  .slide-eyebrow { @apply inline-flex items-center gap-2 py-[5px] px-[14px] border border-[rgba(255,107,0,0.35)] rounded-full text-[0.72rem] font-bold text-(--o3) mb-5 bg-[rgba(255,107,0,0.06)] backdrop-blur-md; }
+  .slide-eyebrow { @apply inline-flex items-center gap-2 py-[5px] px-[14px] border border-[rgba(255,107,0,0.35)] rounded-full text-[0.72rem] font-bold  mb-5  backdrop-blur-md; }
   .slide-eyebrow::before { content: ''; @apply w-[5px] h-[5px] bg-(--o) rounded-full animate-[blink_1.4s_infinite]; }
   @keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.2; transform: scale(0.6); } }
-  .slide-content h1 { @apply text-[2rem] md:text-[3.2rem] font-black text-white leading-[1.15] mb-[18px] tracking-[-0.5px]; }
+  .slide-content h1 { @apply text-[2rem] md:text-[3.2rem] font-extrabold  leading-[1.15] mb-[18px] tracking-[-0.5px]; }
   .slide-content h1 em { @apply text-(--o) not-italic relative; }
   .slide-content h1 em::after { content: ''; @apply absolute -bottom-[3px] left-0 right-0 h-[2px]; background: linear-gradient(90deg, var(--o), transparent); }
   .slide-content p { @apply text-base text-(--muted2) leading-[1.85] mb-8 max-w-[500px]; }

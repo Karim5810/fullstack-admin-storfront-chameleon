@@ -56,7 +56,7 @@ export default function Contact() {
 
   return (
     <div className="page-enter">
-      <div className="bg-gradient-to-b from-(--d3) to-(--d2) border-b border-(--border) py-12">
+      <div className="bg-linear-to-b from-(--d3) to-(--d2) border-b border-(--border) py-12">
         <div className="container text-center">
           <h1 className="text-4xl font-black text-white mb-2">اتصل بنا</h1>
           <p className="text-(--muted2)">للاستفسارات الفنية، التسعير، أو متابعة الطلبات التشغيلية.</p>
@@ -178,7 +178,7 @@ export default function Contact() {
             )}
           </div>
 
-          <div className="bg-(--d2) border border-(--border) rounded-xl overflow-hidden min-h-[500px] p-8">
+          <div className="bg-(--d2) border border-(--border) rounded-xl overflow-hidden min-h-125 p-8">
             <h2 className="text-2xl font-bold text-white mb-4">ماذا يحدث بعد الإرسال؟</h2>
             <div className="space-y-4 text-sm text-(--muted2) leading-7">
               <div className="rounded-2xl border border-(--border) bg-(--d3) p-4">

@@ -7,7 +7,13 @@ import {
   UserSchema,
   WishlistItemSchema,
 } from '../../schema';
-import { isSupabaseConfigured } from '../../supabaseClient';
+import {
+  disableSupabaseRuntime,
+  ensureSupabaseReady,
+  isSupabaseConfigured,
+  isSupabaseAccessDeniedError,
+  isSupabaseSchemaMismatchError,
+} from '../../supabaseClient';
 import type {
   Address,
   B2BRegistration,
@@ -45,6 +51,10 @@ import { resolveUserRole } from '../../utils/auth';
 import { normalizeSiteSettings } from '../../utils/siteContent';
 
 export type DatabaseRow = Record<string, unknown>;
+
+type SupabaseFallbackOptions = {
+  fallbackOnSupabaseError?: boolean;
+};
 
 export const DEMO_USER_STORAGE_KEY = 'alrayan-demo-user';
 export const PROFILES_STORAGE_KEY = 'alrayan-profiles';
@@ -115,6 +125,41 @@ export const asString = (value: unknown, fallback = ''): string => {
   }
 
   return fallback;
+};
+
+const toReadableSupabaseError = (error: unknown): Error => {
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+
+    if (message.includes('duplicate key') || message.includes('unique constraint')) {
+      return new Error('This entry conflicts with an existing record. Change the slug or update the existing item instead.');
+    }
+
+    if (message.includes('row-level security') || message.includes('permission denied')) {
+      return new Error('Supabase rejected this write. Ensure the signed-in profile has admin permissions in the database, not only in the UI.');
+    }
+
+    return error;
+  }
+
+  if (error && typeof error === 'object') {
+    const candidate = error as { code?: string; message?: string };
+    const message = candidate.message?.toLowerCase() ?? '';
+
+    if (candidate.code === '23505' || message.includes('duplicate key') || message.includes('unique constraint')) {
+      return new Error('This entry conflicts with an existing record. Change the slug or update the existing item instead.');
+    }
+
+    if (candidate.code === '42501' || message.includes('row-level security') || message.includes('permission denied')) {
+      return new Error('Supabase rejected this write. Ensure the signed-in profile has admin permissions in the database, not only in the UI.');
+    }
+
+    if (candidate.message) {
+      return new Error(candidate.message);
+    }
+  }
+
+  return new Error('The request to Supabase failed.');
 };
 
 export const asNumber = (value: unknown, fallback = 0): number => {
@@ -479,19 +524,44 @@ export const toB2BRegistration = (row: DatabaseRow): B2BRegistration => ({
 export const fromSupabaseOrFallback = async <T>(
   loadFromSupabase: () => Promise<T>,
   fallback: () => Promise<T> | T,
+  options: SupabaseFallbackOptions = {},
 ) => {
-  if (!isSupabaseConfigured()) {
+  if (!isSupabaseConfigured() || !(await ensureSupabaseReady())) {
     await delay(80);
     return fallback();
   }
 
   try {
     return await loadFromSupabase();
-  } catch {
-    await delay(80);
-    return fallback();
+  } catch (error) {
+    if (isSupabaseSchemaMismatchError(error)) {
+      disableSupabaseRuntime(error);
+      await delay(80);
+      return fallback();
+    }
+
+    if (isSupabaseAccessDeniedError(error)) {
+      disableSupabaseRuntime(error);
+      await delay(80);
+      return fallback();
+    }
+
+    if (options.fallbackOnSupabaseError !== false) {
+      await delay(80);
+      return fallback();
+    }
+
+    throw toReadableSupabaseError(error);
   }
 };
+
+export const fromSupabaseOrThrow = async <T>(
+  loadFromSupabase: () => Promise<T>,
+  fallback: () => Promise<T> | T,
+) =>
+  fromSupabaseOrFallback(loadFromSupabase, fallback, {
+    fallbackOnSupabaseError: false,
+  });
 
 export const getAllFallbackOrders = () => mergeUniqueById([...getStoredOrders(), ...seedOrders.map(cloneOrder)]);
 

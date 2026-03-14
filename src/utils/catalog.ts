@@ -1,6 +1,6 @@
 import type { BlogPost, Product, Service } from '../types';
 
-export const FALLBACK_IMAGE = '/icon-192.png';
+export const FALLBACK_IMAGE = '/logo-192.png';
 
 export const slugify = (value: string) =>
   value
@@ -18,8 +18,9 @@ export const ensureSlug = (value: string | undefined, fallbackValue: string) => 
 export const getProductSlug = (product: Pick<Product, 'id' | 'slug' | 'title'>) =>
   ensureSlug(product.slug, `${product.title}-${product.id}`);
 
+/** Use id for reliable routing; slug can have encoding/matching issues. */
 export const getProductPath = (product: Pick<Product, 'id' | 'slug' | 'title'>) =>
-  `/products/${getProductSlug(product)}`;
+  `/products/${product.id}`;
 
 export const getBlogPostSlug = (post: Pick<BlogPost, 'id' | 'slug' | 'title'>) =>
   ensureSlug(post.slug, `${post.title}-${post.id}`);

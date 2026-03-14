@@ -58,8 +58,17 @@ export function ProductDraftForm({
       <Field label="Stock">
         <input className={textInputClass()} type="number" value={draft.stock} onChange={(event) => onChange({ ...draft, stock: Number(event.target.value) })} />
       </Field>
-      <Field label="Main image">
-        <input className={textInputClass()} value={draft.image} onChange={(event) => onChange({ ...draft, image: event.target.value })} />
+      <Field label="Main image URL">
+        <input
+          className={textInputClass()}
+          value={draft.image}
+          onChange={(event) => onChange({ ...draft, image: event.target.value })}
+        />
+        {draft.image && (
+          <div className="mt-2">
+            <img src={draft.image} alt="Preview" className="max-h-32 rounded border" />
+          </div>
+        )}
       </Field>
       <Field label="Images">
         <input className={textInputClass()} value={stringifyCommaSeparated(draft.images)} onChange={(event) => onChange({ ...draft, images: parseCommaSeparated(event.target.value) })} />
@@ -98,6 +107,11 @@ export function CategoryDraftForm({ draft, onChange }: { draft: Category; onChan
       </Field>
       <Field label="Image">
         <input className={textInputClass()} value={draft.image ?? ''} onChange={(event) => onChange({ ...draft, image: event.target.value || undefined })} />
+        {draft.image && (
+          <div className="mt-2">
+            <img src={draft.image} alt="Preview" className="max-h-32 rounded border" />
+          </div>
+        )}
       </Field>
       <Field label="Icon">
         <input className={textInputClass()} value={draft.icon ?? ''} onChange={(event) => onChange({ ...draft, icon: event.target.value || undefined })} />
@@ -200,7 +214,7 @@ export function BlogDraftForm({ draft, onChange }: { draft: BlogPost; onChange: 
       </div>
       <div className="md:col-span-2">
         <Field label="Content">
-          <textarea className={`${areaClass} min-h-[220px]`} value={draft.content} onChange={(event) => onChange({ ...draft, content: event.target.value })} />
+          <textarea className={`${areaClass} min-h-55`} value={draft.content} onChange={(event) => onChange({ ...draft, content: event.target.value })} />
         </Field>
       </div>
     </div>

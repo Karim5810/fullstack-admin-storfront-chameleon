@@ -1,17 +1,26 @@
 import { useEffect, useState } from 'react';
+import { useImageRegistry } from '../../contexts/ImageRegistryContext';
 import { useSiteContent } from '../../contexts/SiteContentContext';
 import SmartLink from '../SmartLink';
 
-function HeroVisual({ index }: { index: number }) {
+function HeroVisual({ index, image }: { index: number; image?: string }) {
+  if (image) {
+    return (
+      <img
+        src={image}
+        alt=""
+        className="h-auto max-h-[420px] w-auto max-w-[520px] rounded-[32px] border border-[rgba(255,107,0,0.16)] object-cover shadow-[0_24px_80px_rgba(15,23,42,0.45)]"
+        loading="lazy"
+      />
+    );
+  }
+
   if (index % 3 === 0) {
     return (
       <svg width="500" height="500" viewBox="0 0 500 500">
         <polygon points="250,20 480,130 480,370 250,480 20,370 20,130" stroke="#FF6B00" strokeWidth="1" fill="none" />
         <polygon points="250,60 440,155 440,345 250,440 60,345 60,155" stroke="#FF6B00" strokeWidth=".5" fill="none" />
         <polygon points="250,100 400,180 400,320 250,400 100,320 100,180" stroke="#FF6B00" strokeWidth=".3" fill="none" />
-        <text x="250" y="270" textAnchor="middle" fontFamily="Tajawal" fontSize="120" fontWeight="900" fill="#FF6B00">
-          ⚑
-        </text>
       </svg>
     );
   }
@@ -40,6 +49,7 @@ function HeroVisual({ index }: { index: number }) {
 }
 
 export default function Hero() {
+  const { getUrl } = useImageRegistry();
   const { settings } = useSiteContent();
   const hero = settings.home.hero;
   const slides = hero.slides.filter((slide) => slide.isVisible);
@@ -86,7 +96,7 @@ export default function Hero() {
       <div className="hero-slides" style={{ transform: `translateX(${cur * 100}%)` }}>
         {slides.map((slide, index) => (
           <div key={slide.id} className="hero-slide">
-            <div className={`slide-layer slide-gradient s${(index % 3) + 1}-bg`} />
+            <div className={`slide-layer s${(index % 3) + 1}-bg`} />
             <div className="slide-content">
               <div className="slide-eyebrow">{slide.eyebrow}</div>
               <h1>{slide.title}</h1>
@@ -108,7 +118,7 @@ export default function Hero() {
               </div>
             </div>
             <div className="slide-visual">
-              <HeroVisual index={index} />
+              <HeroVisual index={index} image={slide.image || getUrl(`herot-${index + 1}`)} />
             </div>
           </div>
         ))}

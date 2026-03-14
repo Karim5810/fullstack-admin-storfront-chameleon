@@ -66,6 +66,7 @@ export const defaultSiteSettings: SiteSettings = {
           title: 'جميع احتياجات السلامة والصناعة في مكان واحد',
           description:
             'أكثر من 50,000 منتج صناعي معتمد من أفضل العلامات التجارية. توريد B2B و B2C بأسعار تنافسية وتوصيل سريع لجميع أنحاء مصر.',
+          image: '',
           primaryLabel: 'تسوق الآن',
           primaryHref: '#products',
           secondaryLabel: 'طلب عرض سعر',
@@ -78,6 +79,7 @@ export const defaultSiteSettings: SiteSettings = {
           title: 'أنظمة مكافحة الحرائق والسلامة المهنية بخصم يصل إلى 40%',
           description:
             'تشكيلة واسعة من أنظمة الإنذار والإطفاء ومعدات السلامة المعتمدة دولياً من أبرز العلامات التجارية.',
+          image: '',
           primaryLabel: 'استعرض العروض',
           primaryHref: '#deals',
           secondaryLabel: 'شهادات الجودة',
@@ -90,6 +92,7 @@ export const defaultSiteSettings: SiteSettings = {
           title: 'توريد صناعي للشركات والمصانع بعقود طويلة الأمد',
           description:
             'نقدم حلول توريد متكاملة للمصانع والشركات مع ضمان الجودة واستمرارية الإمداد وإدارة مخزون أكثر كفاءة.',
+          image: '',
           primaryLabel: 'تواصل مع فريق B2B',
           primaryHref: '/b2b',
           secondaryLabel: 'مزايا الشركات',

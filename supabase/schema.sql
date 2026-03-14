@@ -95,6 +95,16 @@ create table if not exists public.site_settings (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.image_registry (
+  code text primary key,
+  url text not null default '',
+  description text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists image_registry_code_idx on public.image_registry(code);
+
 create table if not exists public.addresses (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
@@ -232,6 +242,10 @@ drop trigger if exists site_settings_set_updated_at on public.site_settings;
 create trigger site_settings_set_updated_at before update on public.site_settings
 for each row execute function public.set_updated_at();
 
+drop trigger if exists image_registry_set_updated_at on public.image_registry;
+create trigger image_registry_set_updated_at before update on public.image_registry
+for each row execute function public.set_updated_at();
+
 drop trigger if exists addresses_set_updated_at on public.addresses;
 create trigger addresses_set_updated_at before update on public.addresses
 for each row execute function public.set_updated_at();
@@ -291,6 +305,7 @@ alter table public.quote_requests enable row level security;
 alter table public.newsletter_subscribers enable row level security;
 alter table public.b2b_registrations enable row level security;
 alter table public.site_settings enable row level security;
+alter table public.image_registry enable row level security;
 
 drop policy if exists categories_public_read on public.categories;
 create policy categories_public_read on public.categories
@@ -334,6 +349,15 @@ for select using (true);
 
 drop policy if exists site_settings_admin_manage on public.site_settings;
 create policy site_settings_admin_manage on public.site_settings
+for all using (public.is_admin())
+with check (public.is_admin());
+
+drop policy if exists image_registry_public_read on public.image_registry;
+create policy image_registry_public_read on public.image_registry
+for select using (true);
+
+drop policy if exists image_registry_admin_manage on public.image_registry;
+create policy image_registry_admin_manage on public.image_registry
 for all using (public.is_admin())
 with check (public.is_admin());
 

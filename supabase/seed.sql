@@ -1,3 +1,19 @@
+-- سجل الصور: كود → رابط (herot-1 للهيرو، Cat-1 للفئات)
+insert into public.image_registry (code, url, description)
+values
+  ('herot-1', '', 'Hero slide 1'),
+  ('herot-2', '', 'Hero slide 2'),
+  ('herot-3', '', 'Hero slide 3'),
+  ('Cat-1', '', 'Category 1'),
+  ('Cat-2', '', 'Category 2'),
+  ('Cat-3', '', 'Category 3'),
+  ('Cat-4', '', 'Category 4'),
+  ('Cat-5', '', 'Category 5'),
+  ('Cat-6', '', 'Category 6'),
+  ('Cat-7', '', 'Category 7'),
+  ('Cat-8', '', 'Category 8')
+on conflict (code) do nothing;
+
 insert into public.categories (id, slug, name, description, image)
 values
   ('10000000-0000-0000-0000-000000000001', 'safety', 'معدات السلامة الشخصية', 'خوذات وقفازات وسترات وتجهيزات حماية للاستخدام الصناعي اليومي.', '/icon-192.png'),
