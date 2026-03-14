@@ -20,7 +20,6 @@ export default function Footer() {
               <div>
                 <div style={{ fontSize: '1.4rem', fontWeight: '900', color: '#fff' }}>{header.logoTitle}</div>
                 <div style={{ fontSize: '.6rem', color: 'var(--o)', fontWeight: '600', letterSpacing: '2px' }}>
-                  {header.logoSubtitle}
                 </div>
               </div>
             </SmartLink>

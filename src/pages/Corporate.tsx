@@ -6,7 +6,7 @@ export default function Corporate() {
     <div className="page-enter">
       <div className="bg-linear-to-r from-(--d3) via-(--d2) to-(--d3) border-b border-(--border) py-14">
         <div className="container max-w-4xl text-center">
-          <h1 className="text-4xl font-black text-white mb-4">مزايا الشركات</h1>
+          <h1 className="text-4xl font-black mb-4">مزايا الشركات</h1>
           <p className="text-(--muted2) leading-8">
             حلول مخصصة للمصانع والمقاولين ومديري المرافق تشمل التسعير التجاري، التوريد الدوري، وتغطية احتياجات المواقع.
           </p>

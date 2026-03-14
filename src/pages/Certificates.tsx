@@ -12,7 +12,7 @@ export default function Certificates() {
     <div className="page-enter">
       <div className="container py-14">
         <div className="max-w-3xl mb-10">
-          <h1 className="text-4xl font-black text-white mb-4">الشهادات والاعتمادات</h1>
+          <h1 className="text-4xl font-black mb-4">الشهادات والاعتمادات</h1>
           <p className="text-(--muted2) leading-8">
             نعرض هنا مسارات الاعتماد والامتثال التي ندعم بها الشركات في التوريد والسلامة والتشغيل.
           </p>

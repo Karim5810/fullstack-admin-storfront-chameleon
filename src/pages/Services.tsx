@@ -27,7 +27,7 @@ export default function Services() {
     <div className="page-enter">
       <div className="bg-linear-to-r from-(--d3) to-(--d2) border-b border-(--border) py-12">
         <div className="container text-center">
-          <h1 className="text-4xl font-black text-white mb-2">خدماتنا الصناعية</h1>
+          <h1 className="text-4xl font-black  mb-2">خدماتنا الصناعية</h1>
           <p className="text-(--muted2)">مسارات تنفيذية تربط بين التوريد والسلامة والتشغيل والتحسين المستمر.</p>
         </div>
       </div>

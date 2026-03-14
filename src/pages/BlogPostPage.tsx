@@ -51,7 +51,7 @@ export default function BlogPostPage() {
           <div className="inline-flex px-3 py-1 rounded-full bg-[rgba(255,107,0,0.12)] text-(--o) text-sm font-bold mb-4">
             {post?.category ?? 'المعرفة الصناعية'}
           </div>
-          <h1 className="text-4xl font-black text-white mb-4 leading-tight">{post?.title ?? '...'}</h1>
+          <h1 className="text-4xl font-black mb-4 leading-tight">{post?.title ?? '...'}</h1>
           <div className="flex gap-4 flex-wrap text-sm text-(--muted2)">
             <span>{post?.author}</span>
             <span>{post ? new Date(post.publishedAt).toLocaleDateString('ar-EG') : ''}</span>

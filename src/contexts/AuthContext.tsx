@@ -16,8 +16,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const DEMO_USER_STORAGE_KEY = 'alrayan-demo-user';
-
+const DEMO_USER_STORAGE_KEY = 'rayyan-demo-user';
 const buildDemoUser = (email: string, name?: string): User => ({
   id: `demo-${email.toLowerCase()}`,
   email,
@@ -184,9 +183,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) {
         throw new Error(error.message);
       }
-
-      setUser(null);
     } finally {
+      setUser(null);
       setIsLoading(false);
     }
   };

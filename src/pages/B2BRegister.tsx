@@ -58,7 +58,7 @@ export default function B2BRegister() {
     <div className="page-enter">
       <div className="bg-linear-to-r from-(--d3) via-(--d2) to-(--d3) border-b border-(--border) py-14">
         <div className="container text-center max-w-3xl">
-          <h1 className="text-4xl font-black text-white mb-4">تسجيل حساب أعمال</h1>
+          <h1 className="text-4xl font-black mb-4">تسجيل حساب أعمال</h1>
           <p className="text-(--muted2) leading-8">
             افتح ملف شركتك مع فريق التوريد B2B للحصول على تسعير تعاقدي ومتابعة احتياجات المواقع والمخازن.
           </p>

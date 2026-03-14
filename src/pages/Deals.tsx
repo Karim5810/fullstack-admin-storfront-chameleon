@@ -44,7 +44,7 @@ export default function Deals() {
     <div className="page-enter">
       <div className="bg-linear-to-r from-[rgba(255,107,0,0.1)] to-transparent border-b border-[var(--border)] py-12">
         <div className="container">
-          <h1 className="text-4xl font-black text-white mb-4">عروض حصرية</h1>
+          <h1 className="text-4xl font-black mb-4">عروض حصرية</h1>
           <div className="flex gap-4 items-center flex-wrap">
             {[
               { value: timeLeft.days, label: 'أيام' },

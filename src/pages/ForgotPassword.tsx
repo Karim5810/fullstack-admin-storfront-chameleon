@@ -84,7 +84,7 @@ export default function ForgotPassword() {
                 <circle cx="12" cy="10" r="1" />
                 <circle cx="15" cy="10" r="1" />
               </svg>
-              <h2 className="text-xl font-bold text-white mb-2">تم إرسال الرابط</h2>
+              <h2 className="text-xl font-bold mb-2">تم إرسال الرابط</h2>
               <p className="text-(--muted2) mb-6">
                 إذا كان هذا البريد مسجلا، فسيصلك رابط إعادة التعيين على {email}.
               </p>

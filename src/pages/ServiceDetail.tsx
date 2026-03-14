@@ -54,7 +54,7 @@ export default function ServiceDetail() {
     <div className="page-enter">
       <div className="bg-linear-to-r from-(--d3) to-(--d2) border-b border-(--border) py-12">
         <div className="container max-w-5xl">
-          <h1 className="text-4xl font-black text-white mb-4">{service?.title ?? '...'}</h1>
+          <h1 className="text-4xl font-black mb-4">{service?.title ?? '...'}</h1>
           <p className="text-(--muted2) max-w-3xl leading-8">
             {service?.description || 'حل مهني مصمم لدعم التشغيل والسلامة داخل منشأتك.'}
           </p>

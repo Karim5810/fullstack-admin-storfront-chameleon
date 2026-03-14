@@ -43,18 +43,18 @@ export default function Categories({ categories, products }: CategoriesProps) {
             const imageUrl = category.image || getUrl(`Cat-${index + 1}`);
             return (
               <SmartLink key={category.id} href={`/category/${category.slug}`} className="cat-tile">
-                <div className="cat-icon-ring">
+                <div className="cat-image-wrapper">
                   {imageUrl ? (
-                    <img src={imageUrl} alt="" className="absolute inset-0 h-full w-full rounded-full object-cover" />
+                    <img src={imageUrl} alt={category.name} className="cat-image" />
                   ) : (
-                    <>
+                    <div className="cat-icon-ring">
                       <svg className="ring" viewBox="0 0 54 54">
                         <circle cx="27" cy="27" r="25" fill="none" stroke="rgba(255,107,0,0.2)" strokeWidth="1" strokeDasharray="4 3" />
                       </svg>
                       <svg className="icon" viewBox="0 0 24 24">
                         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                       </svg>
-                    </>
+                    </div>
                   )}
                 </div>
                 <div className="cat-tile-name">{category.name}</div>

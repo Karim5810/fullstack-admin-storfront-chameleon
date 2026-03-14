@@ -39,7 +39,7 @@ export default function CategoriesPage() {
     <div className="page-enter">
       <div className="bg-linear-to-r from-(--d3) to-(--d2) border-b border-(--border) py-12">
         <div className="container text-center">
-          <h1 className="text-4xl font-black text-white mb-2">جميع الفئات</h1>
+          <h1 className="text-4xl font-black  mb-2">جميع الفئات</h1>
           <p className="text-(--muted2)">استكشف الفئات الأساسية للمعدات الصناعية ومستلزمات السلامة.</p>
         </div>
       </div>
@@ -73,7 +73,7 @@ export default function CategoriesPage() {
                     </svg>
                   )}
                 </div>
-                <h2 className="text-xl font-bold text-white mb-2">{category.name}</h2>
+                <h2 className="text-xl font-bold mb-2">{category.name}</h2>
                 <p className="text-(--muted2) text-sm mb-4 leading-7">
                   {category.description || 'فئة متخصصة ضمن كتالوج الريان للمعدات الصناعية.'}
                 </p>

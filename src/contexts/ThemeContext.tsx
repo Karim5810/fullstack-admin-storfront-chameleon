@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 
-type Theme = 'dark' | 'light';
+type Theme = 'light' | 'dark' ;
 
 type ThemeContextValue = {
   theme: Theme;

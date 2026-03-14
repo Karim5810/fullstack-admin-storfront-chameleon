@@ -32,7 +32,7 @@ export default function Careers() {
       {/* Hero */}
       <div className="bg-linear-to-r from-(--d3) to-(--d2) border-b border-(--border) py-16">
         <div className="container text-center">
-          <h1 className="text-4xl font-black text-white mb-4">انضم إلى فريقنا</h1>
+          <h1 className="text-4xl font-black mb-4">انضم إلى فريقنا</h1>
           <p className="text-(--muted2) max-w-2xl mx-auto">
             نبحث عن مواهب متميزة تشاركنا رؤيتنا في تحسين السلامة الصناعية
           </p>

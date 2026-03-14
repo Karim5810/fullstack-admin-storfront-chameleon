@@ -6,7 +6,7 @@ export default function NotFoundPage() {
     <div className="container py-20 min-h-[60vh] flex items-center justify-center">
       <div className="max-w-xl w-full bg-(--d2) border border-(--border) rounded-3xl p-10 text-center">
         <div className="text-(--o) text-sm font-bold mb-4">404</div>
-        <h1 className="text-4xl font-black text-white mb-4">الصفحة غير موجودة</h1>
+        <h1 className="text-4xl font-black mb-4">الصفحة غير موجودة</h1>
         <p className="text-(--muted2) leading-8 mb-8">
           الرابط الذي تحاول الوصول إليه غير متاح حالياً أو تم نقله إلى مسار آخر داخل المنصة.
         </p>

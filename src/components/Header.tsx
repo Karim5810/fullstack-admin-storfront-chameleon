@@ -29,14 +29,18 @@ export default function Header() {
   };
 
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
     navigate('/');
   };
 
   return (
     <>
-      <header>
-        <div className="h-inner">
+      <header className="site-header h-24">
+        <div className="h-inner h-24">
           <button type="button" className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(true)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="12" x2="21" y2="12" />
@@ -46,10 +50,9 @@ export default function Header() {
           </button>
 
           <Link to="/" className="logo">
-            <img src="/logo-192.png" alt={header.logoTitle} style={{ height: '40px', width: 'auto' }} />
+            <img src="/logo-192.png" alt={header.logoTitle} style={{ height: '95px', width: 'auto' }} />
             <div className="logo-words" style={{ marginLeft: '10px' }}>
-              <span className="logo-ar">{header.logoTitle}</span>
-              <span className="logo-sub">{header.logoSubtitle}</span>
+              
             </div>
           </Link>
 

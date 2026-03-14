@@ -58,7 +58,7 @@ export default function Contact() {
     <div className="page-enter">
       <div className="bg-linear-to-b from-(--d3) to-(--d2) border-b border-(--border) py-12">
         <div className="container text-center">
-          <h1 className="text-4xl font-black text-white mb-2">اتصل بنا</h1>
+          <h1 className="text-4xl font-black  mb-2">اتصل بنا</h1>
           <p className="text-(--muted2)">للاستفسارات الفنية، التسعير، أو متابعة الطلبات التشغيلية.</p>
         </div>
       </div>
@@ -170,7 +170,7 @@ export default function Contact() {
               </form>
             ) : (
               <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center">
-                <h3 className="text-xl font-bold text-white mb-2">تم استلام رسالتك</h3>
+                <h3 className="text-xl font-bold mb-2">تم استلام رسالتك</h3>
                 <p className="text-(--muted2)">
                   رقم المتابعة: {submittedMessage.id}. سنراجع الرسالة ونعود إليك في أقرب وقت.
                 </p>

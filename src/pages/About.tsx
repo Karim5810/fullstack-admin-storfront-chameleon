@@ -5,9 +5,9 @@ export default function About() {
   return (
     <div className="page-enter">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-(--d3) to-(--d2) border-b border-(--border) py-16">
+      <div className="bg-linear-to-b from-(--d3) to-(--d2) border-b border-(--border) py-16">
         <div className="container text-center">
-          <h1 className="text-4xl font-black text-white mb-4">نبذة عن الريان للسلامة الصناعية</h1>
+          <h1 className="text-4xl font-black  mb-4">نبذة عن الريان للسلامة الصناعية</h1>
           <p className="text-(--muted2) max-w-2xl mx-auto">
             رائدة في مجال توفير حلول السلامة والمعدات الصناعية الموثوقة منذ 2015
           </p>
@@ -60,7 +60,7 @@ export default function About() {
               { title: 'رؤيتنا', desc: 'أن نكون الشركة الرائدة في مجال السلامة الصناعية' },
               { title: 'قيمنا', desc: 'الشفافية والنزاهة والجودة في كل ما نقدمه' },
             ].map((val, i) => (
-              <div key={i} className="bg-gradient-to-br from-[rgba(255,107,0,0.05)] to-transparent border border-(--border) rounded-xl p-8">
+              <div key={i} className="bg-linear-to-br from-[rgba(255,107,0,0.05)] to-transparent border border-(--border) rounded-xl p-8">
                 <h3 className="text-xl font-bold text-(--o) mb-3">{val.title}</h3>
                 <p className="text-(--muted2)">{val.desc}</p>
               </div>

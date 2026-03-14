@@ -342,10 +342,12 @@
   /* Categories */
   .cats-section { @apply pt-14; }
   .cats-grid { @apply grid grid-cols-4 md:grid-cols-8 gap-2.5; }
-  .cat-tile { @apply bg-(--d2) border border-(--border) rounded-xl py-5 px-3 text-center cursor-pointer transition-all duration-250 no-underline flex flex-col items-center gap-2.5 relative overflow-hidden hover:border-(--border2) hover:-translate-y-[5px]; }
+  .cat-tile { @apply bg-(--d2) border border-(--border) rounded-xl pt-0 pb-5  text-center cursor-pointer transition-all duration-250 no-underline flex flex-col items-center gap-2.5 relative overflow-hidden hover:border-(--border2) hover:-translate-y-[5px]; }
   .cat-tile::before { content: ''; @apply absolute inset-0 opacity-0 transition-opacity duration-250; background: radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.12), transparent 70%); }
   .cat-tile:hover::before { @apply opacity-100; }
-  .cat-icon-ring { @apply w-[54px] h-[54px] relative shrink-0; }
+  .cat-image-wrapper { @apply w-full h-27.5 overflow-hidden rounded-t-xl mb-4 ; }
+  .cat-image { @apply w-full h-full object-cover; }
+  .cat-icon-ring { @apply relative shrink-0 mx-auto mt-6; }
   .cat-icon-ring svg.ring { @apply absolute inset-0 w-full h-full animate-[spin_20s_linear_infinite]; }
   .cat-tile:hover .cat-icon-ring svg.ring { animation-duration: 5s; }
   .cat-icon-ring svg.icon { @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 fill-none stroke-(--o) stroke-[1.8]; }
@@ -418,7 +420,7 @@
   .deals-header-card::before { content: ''; @apply absolute -right-[100px] -top-[100px] w-[300px] h-[300px]; background: radial-gradient(circle, rgba(255,107,0,0.08), transparent 70%); }
   .deals-header-card::after { content: ''; @apply absolute -left-[50px] -bottom-[50px] w-[200px] h-[200px]; background: radial-gradient(circle, rgba(255,107,0,0.05), transparent 70%); }
   .deals-info { @apply relative z-10; }
-  .deals-info h2 { @apply text-[1.8rem] font-black text-white mb-2; }
+  .deals-info h2 { @apply text-[1.8rem] font-black mb-2; }
   .deals-info p { @apply text-(--muted2) mb-5 text-[0.875rem]; }
   .countdown { @apply flex gap-3 items-center relative z-10; }
   .count-block { @apply text-center bg-(--d3) border border-(--border2) rounded-[10px] py-3.5 px-[18px] min-w-[68px]; }

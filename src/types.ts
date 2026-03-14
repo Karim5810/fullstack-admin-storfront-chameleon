@@ -160,14 +160,14 @@ export interface ContactMessage {
   message: string;
   status: 'new' | 'open' | 'resolved';
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface NewsletterSubscription {
   id: string;
   email: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface B2BRegistration {
@@ -182,8 +182,28 @@ export interface B2BRegistration {
   requirements: string;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
+  updatedAt?: string;
 }
 
+export interface AdminUserMetrics {
+  totalUsers: number;
+  newUsersLast7Days: number;
+  newUsersLast30Days: number;
+  activeUsersLast7Days: number;
+  activeUsersLast30Days: number;
+}
+
+export interface updatedAt {
+  id: string
+  userId: string
+  name: string
+  email: string
+  phone: string
+  subject: string
+  message: string
+  status: "new" | "open" | "resolved"
+  createdAt: string
+}
 export interface AdminDashboardMetrics {
   totalRevenue: number;
   orderCount: number;
@@ -338,6 +358,7 @@ export interface FooterSettings {
   bottomText: string;
   policyLinks: SiteLink[];
   paymentMethods: string[];
+  relatedProductUrls?: string;
 }
 
 export interface HomeHeroSettings {

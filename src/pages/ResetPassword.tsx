@@ -146,7 +146,7 @@ export default function ResetPassword() {
               <svg className="w-16 h-16 mx-auto mb-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              <h2 className="text-xl font-bold text-white mb-2">تم تحديث كلمة المرور</h2>
+              <h2 className="text-xl font-bold mb-2">تم تحديث كلمة المرور</h2>
               <p className="text-(--muted2)">سيتم تحويلك إلى صفحة تسجيل الدخول خلال لحظات.</p>
             </div>
           )}

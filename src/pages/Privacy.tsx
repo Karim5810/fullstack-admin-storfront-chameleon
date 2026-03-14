@@ -5,7 +5,7 @@ export default function Privacy() {
   return (
     <div className="page-enter">
       {/* Header */}
-      <div className="bg-gradient-to-b from-(--d3) to-(--d2) border-b border-(--border) py-12">
+      <div className="bg-linear-to-b from-(--d3) to-(--d2) border-b border-(--border) py-12">
         <div className="container">
           <h1 className="text-4xl font-black text-white">سياسة الخصوصية</h1>
           <p className="text-(--muted2) mt-2">آخر تحديث: يناير 2024</p>

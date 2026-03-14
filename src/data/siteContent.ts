@@ -24,7 +24,7 @@ export const defaultSiteSettings: SiteSettings = {
   header: {
     logoTitle: 'الريان',
     logoSubtitle: 'Industrial & Safety',
-    searchPlaceholder: 'ابحث عن معدات السلامة، الأدوات الصناعية، وأجهزة القياس...',
+    searchPlaceholder: 'ابحث عن المنتجات، الخدمات، أو الفئات...',
     allCategoriesLabel: 'جميع الفئات',
     searchButtonLabel: 'بحث',
     accountLabel: 'حسابي',

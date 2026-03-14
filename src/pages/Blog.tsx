@@ -45,7 +45,7 @@ export default function Blog() {
     <div className="page-enter">
       <div className="bg-linear-to-r from-(--d3) to-(--d2) border-b border-(--border) py-12">
         <div className="container text-center">
-          <h1 className="text-4xl font-black text-white mb-2">مركز المعرفة الصناعية</h1>
+          <h1 className="text-4xl font-black  mb-2">مركز المعرفة الصناعية</h1>
           <p className="text-(--muted2)">مقالات وأدلة تشغيل تساعد فرق السلامة والتشغيل والمشتريات.</p>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function Blog() {
                 }`}
               >
                 <div
-                  className={`bg-gradient-to-br from-(--d3) to-(--d4) flex items-center justify-center ${
+                  className={`bg-linear-to-br from-(--d3) to-(--d4) flex items-center justify-center ${
                     index === 0 ? 'h-80' : 'h-[220px]'
                   }`}
                 >

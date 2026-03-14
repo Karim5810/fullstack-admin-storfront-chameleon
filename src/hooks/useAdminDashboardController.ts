@@ -533,6 +533,44 @@ export function useAdminDashboardController({
     }
   };
 
+  const handleQuoteStatusUpdate = async (quote: QuoteRequest, status: QuoteRequest['status']) => {
+    if (quote.status === status) {
+      return;
+    }
+
+    setUpdatingLeadId(quote.id);
+    setError(null);
+
+    try {
+      await api.quote.update(quote.id, { status });
+      setNotice(`Quote request from ${quote.company} moved to ${status}.`);
+      await loadWorkspace();
+    } catch (nextError) {
+      setError(nextError instanceof Error ? nextError.message : 'Failed to update quote status.');
+    } finally {
+      setUpdatingLeadId(null);
+    }
+  };
+
+  const handleB2BStatusUpdate = async (b2b: B2BRegistration, status: B2BRegistration['status']) => {
+    if (b2b.status === status) {
+      return;
+    }
+
+    setUpdatingLeadId(b2b.id);
+    setError(null);
+
+    try {
+      await api.b2b.update(b2b.id, { status });
+      setNotice(`B2B registration from ${b2b.companyName} moved to ${status}.`);
+      await loadWorkspace();
+    } catch (nextError) {
+      setError(nextError instanceof Error ? nextError.message : 'Failed to update B2B status.');
+    } finally {
+      setUpdatingLeadId(null);
+    }
+  };
+
   const quickToggleCatalogEntity = async (type: CatalogEntityType, item: CatalogEntity) => {
     const nextVisibility = !getEntityIsVisible(item);
     setQuickToggleKey(`${type}:${item.id}`);
@@ -658,6 +696,8 @@ export function useAdminDashboardController({
     saveCatalogEntity,
     deleteCatalogEntity,
     handleOrderStatusUpdate,
+    handleQuoteStatusUpdate,
+    handleB2BStatusUpdate,
     quickToggleCatalogEntity,
     getCatalogConflict,
     openCatalogConflict,
