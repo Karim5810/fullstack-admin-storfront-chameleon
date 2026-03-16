@@ -59,6 +59,7 @@ export default function Login() {
             </div>
             <input
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="bg-(--d3) border border-(--border) text-white px-4 py-3 rounded-lg outline-none focus:border-(--o) transition-colors"

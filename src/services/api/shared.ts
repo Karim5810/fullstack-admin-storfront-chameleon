@@ -13,6 +13,7 @@ import {
   isSupabaseConfigured,
   isSupabaseAccessDeniedError,
   isSupabaseSchemaMismatchError,
+  supabase,
 } from '../../supabaseClient';
 import type {
   Address,
@@ -278,10 +279,10 @@ export const getStoredWishlistItems = (userId: string) =>
   readStorage<WishlistItem[]>(getWishlistStorageKey(userId), []);
 export const setStoredWishlistItems = (items: WishlistItem[], userId: string) =>
   writeStorage(getWishlistStorageKey(userId), items);
-export const getStoredProducts = () => readStorage<Product[]>(PRODUCTS_STORAGE_KEY, []);
-export const setStoredProducts = (products: Product[]) => writeStorage(PRODUCTS_STORAGE_KEY, products);
 export const getStoredCategories = () => readStorage<Category[]>(CATEGORIES_STORAGE_KEY, []);
 export const setStoredCategories = (categories: Category[]) => writeStorage(CATEGORIES_STORAGE_KEY, categories);
+export const getStoredProducts = () => readStorage<Product[]>(PRODUCTS_STORAGE_KEY, []);
+export const setStoredProducts = (products: Product[]) => writeStorage(PRODUCTS_STORAGE_KEY, products);
 export const getStoredBlogPosts = () => readStorage<BlogPost[]>(BLOG_POSTS_STORAGE_KEY, []);
 export const setStoredBlogPosts = (posts: BlogPost[]) => writeStorage(BLOG_POSTS_STORAGE_KEY, posts);
 export const getStoredServices = () => readStorage<Service[]>(SERVICES_STORAGE_KEY, []);
@@ -291,8 +292,7 @@ export const getStoredSiteSettings = () =>
 export const setStoredSiteSettings = (settings: SiteSettings) => writeStorage(SITE_SETTINGS_STORAGE_KEY, settings);
 
 export const getFallbackProducts = () => {
-  const stored = getStoredProducts();
-  return stored.length > 0 ? stored.map(cloneProduct) : seedProducts.map(cloneProduct);
+  return seedProducts.map(cloneProduct);
 };
 
 export const getFallbackCategories = () => {
@@ -527,26 +527,35 @@ export const fromSupabaseOrFallback = async <T>(
   options: SupabaseFallbackOptions = {},
 ) => {
   if (!isSupabaseConfigured() || !(await ensureSupabaseReady())) {
+    const msg = !isSupabaseConfigured() 
+      ? '[API] Supabase not configured, using fallback data'
+      : '[API] Supabase not ready, using fallback data';
+    if (import.meta.env.DEV) console.warn(msg);
     await delay(80);
     return fallback();
   }
 
   try {
-    return await loadFromSupabase();
+    const result = await loadFromSupabase();
+    if (import.meta.env.DEV) console.log('[API] ✓ Loaded from Supabase');
+    return result;
   } catch (error) {
     if (isSupabaseSchemaMismatchError(error)) {
+      if (import.meta.env.DEV) console.warn('[API] Schema mismatch, using fallback data', error);
       disableSupabaseRuntime(error);
       await delay(80);
       return fallback();
     }
 
     if (isSupabaseAccessDeniedError(error)) {
+      if (import.meta.env.DEV) console.warn('[API] Access denied, using fallback data', error);
       disableSupabaseRuntime(error);
       await delay(80);
       return fallback();
     }
 
     if (options.fallbackOnSupabaseError !== false) {
+      if (import.meta.env.DEV) console.warn('[API] Supabase error, using fallback data', error);
       await delay(80);
       return fallback();
     }
@@ -575,6 +584,44 @@ export const mergeUserProfile = (baseUser: User, profile: Partial<User> | null):
     updatedAt: profile?.updatedAt ?? baseUser.updatedAt,
   });
 
+/**
+ * Diagnostic function to verify Supabase connection and data availability
+ * Use this to check if production is using real data or fallback
+ */
+export const diagnosticCheckDatabase = async () => {
+  const result = {
+    supabaseConfigured: isSupabaseConfigured(),
+    supabaseReady: await ensureSupabaseReady(),
+    fallbackProductCount: seedProducts.length,
+    supabaseProductCount: 0,
+    error: null as string | null,
+  };
+
+  try {
+    if (result.supabaseConfigured && result.supabaseReady) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('id')
+        .eq('is_active', true);
+      
+      if (error) {
+        result.error = `Supabase error: ${error.message}`;
+      } else {
+        result.supabaseProductCount = data?.length ?? 0;
+      }
+    }
+  } catch (err) {
+    result.error = `Exception: ${err instanceof Error ? err.message : String(err)}`;
+  }
+
+  // Log to console if in dev mode
+  if (import.meta.env.DEV) {
+    console.log('[DIAGNOSTIC] Database Status:', result);
+  }
+
+  return result;
+};
+
 export const loadProfileFromFallback = (userId: string) => {
   const demoUser = parseDemoUser();
   const storedProfile = getStoredProfiles().find((profile) => profile.id === userId) ?? null;
@@ -592,10 +639,8 @@ export const saveFallbackProfile = (profile: User) => {
   setStoredProfiles(nextProfiles);
 };
 
-export const buildSeedProductMap = () => new Map(seedProducts.map((product) => [product.id, product]));
-
 export const enrichOrderItems = (order: Order): Order => {
-  const productMap = buildSeedProductMap();
+  const productMap = new Map(seedProducts.map((product) => [product.id, product]));
 
   return {
     ...order,

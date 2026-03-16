@@ -38,6 +38,7 @@ import {
   useAdminDashboardController,
 } from '../hooks/useAdminDashboardController';
 
+
 type DeleteDialogState = {
   open: boolean;
   type?: CatalogEntityType;
@@ -72,9 +73,9 @@ export default function AdminDashboard() {
   const wrapSave = (type: CatalogEntityType, label: string) => async () => {
     try {
       await controller.saveCatalogEntity(type);
-      addToast(`${label} saved`, 'success', 4000);
+      addToast(`تم حفظ ${label}`, 'success', 4000);
     } catch (err) {
-      addToast(`Failed to save ${label.toLowerCase()}`, 'error');
+      addToast(`فشل حفظ ${label}`, 'error');
     }
   };
 
@@ -104,19 +105,19 @@ export default function AdminDashboard() {
     try {
       await controller.deleteCatalogEntity(deleteDialog.type);
       const label = deleteDialog.type.charAt(0).toUpperCase() + deleteDialog.type.slice(1);
-      addToast(`${label} deleted`, 'success', 4000);
+      addToast(`تم حذف ${label}`, 'success', 4000);
       setDeleteDialog({ open: false });
     } catch {
-      addToast('Failed to delete', 'error');
+      addToast('فشل الحذف', 'error');
     }
   };
 
   const wrapPublish = async () => {
     try {
       await controller.handleSaveStorefront();
-      addToast('Storefront published', 'success', 4000);
+      addToast('تم نشر المتجر', 'success', 4000);
     } catch {
-      addToast('Failed to publish storefront', 'error');
+      addToast('فشل نشر المتجر', 'error');
     }
   };
 
@@ -140,7 +141,9 @@ export default function AdminDashboard() {
           storefrontDirty={controller.storefrontDirty}
           onRefresh={() => void controller.loadWorkspace()}
           onSignOut={handleSignOut}
-          onStorefront={() => controller.setActiveTab('storefront')}
+          onStorefront={() => controller.setActiveTab('storefront')} 
+          activeTab={activeTab} 
+          onMenuClick={() => {}}
         >
           {!!controller.error && <AdminMessage tone="error">{controller.error}</AdminMessage>}
           {!!controller.notice && <AdminMessage tone="success">{controller.notice}</AdminMessage>}
@@ -190,8 +193,8 @@ export default function AdminDashboard() {
 
       <DeleteConfirmDialog
         open={deleteDialog.open}
-        title="Delete permanently?"
-        message="This action cannot be undone. All associated data will be removed."
+        title="هل تريد الحذف نهائياً؟"
+        message="لا يمكن التراجع عن هذا النشاط. سيتم إزالة جميع البيانات المرتبطة."
         itemName={deleteDialog.item ? controller.getEntityTitle(deleteDialog.item) : ''}
         isLoading={controller.isSaving}
         onConfirm={handleConfirmDelete}

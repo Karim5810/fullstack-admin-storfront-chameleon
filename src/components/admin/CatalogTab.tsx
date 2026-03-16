@@ -1,15 +1,14 @@
-import { Panel, SectionCard, StatusPill, Field, ToggleField, textInputClass } from './AdminShell';
+import { useState } from 'react';
 import type {
   CatalogEntityType,
   useAdminDashboardController,
 } from '../../hooks/useAdminDashboardController';
 import type { BlogPost, Category, Product, Service } from '../../types';
-import {
-  ProductDraftForm,
-  CategoryDraftForm,
-  ServiceDraftForm,
-  BlogDraftForm,
-} from './CatalogForms';
+import { CatalogTable } from './CatalogTable';
+import { CatalogEditor } from './CatalogEditor';
+import { CatalogToolbar } from './CatalogToolbar';
+import { CatalogEditModal } from './CatalogEditModal';
+import { Pagination } from './Pagination';
 
 type CatalogTabProps = {
   activeTab: 'products' | 'categories' | 'services' | 'blog';
@@ -19,11 +18,16 @@ type CatalogTabProps = {
   addToast: (message: string, tone: 'success' | 'error', durationMs?: number) => void;
 };
 
+type CatalogItem = Product | Category | Service | BlogPost;
+
+const ITEMS_PER_PAGE = 25;
+
 export function CatalogTab({
   activeTab,
   controller,
   wrapSave,
   wrapDelete,
+  addToast,
 }: CatalogTabProps) {
   const {
     filteredProducts,
@@ -49,175 +53,251 @@ export function CatalogTab({
     getDraftSeed,
   } = controller;
 
+  // Modal & pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteConfirming, setIsDeleteConfirming] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const config =
     activeTab === 'products'
       ? {
           type: 'product' as const,
-          title: 'Products',
-          items: filteredProducts as Product[],
+          title: 'المنتجات',
+          items: filteredProducts as CatalogItem[],
           draft: productDraft as Product,
           setDraft: setProductDraft,
         }
       : activeTab === 'categories'
         ? {
             type: 'category' as const,
-            title: 'Categories',
-            items: filteredCategories as Category[],
+            title: 'الأقسام',
+            items: filteredCategories as CatalogItem[],
             draft: categoryDraft as Category,
             setDraft: setCategoryDraft,
           }
         : activeTab === 'services'
           ? {
               type: 'service' as const,
-              title: 'Services',
-              items: filteredServices as Service[],
+              title: 'الخدمات',
+              items: filteredServices as CatalogItem[],
               draft: serviceDraft as Service,
               setDraft: setServiceDraft,
             }
           : {
               type: 'post' as const,
-              title: 'Blog posts',
-              items: filteredPosts as BlogPost[],
+              title: 'مقالات المدونة',
+              items: filteredPosts as CatalogItem[],
               draft: postDraft as BlogPost,
               setDraft: setPostDraft,
             };
 
+  // Reset to page 1 when filters change
+  const handleSearchChange = (value: string) => {
+    setEntitySearch(value);
+    setCurrentPage(1);
+  };
+
+  const handleVisibilityFilterChange = (value: 'all' | 'visible' | 'hidden') => {
+    setVisibilityFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleClearFilters = () => {
+    setEntitySearch('');
+    setVisibilityFilter('all');
+    setCurrentPage(1);
+  };
+
+  // Pagination logic
+  const totalPages = Math.ceil(config.items.length / ITEMS_PER_PAGE);
+  const paginatedItems = config.items.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  // Modal handlers
+  const handleEditItem = (item: CatalogItem) => {
+    config.setDraft(item as any);
+    setIsModalOpen(true);
+  };
+
   const handleCreateNew = () => {
     const seed = getDraftSeed(config.type, categories);
     config.setDraft(seed as any);
+    setIsModalOpen(true);
   };
+
+  const handleSaveModal = async () => {
+    setIsSaving(true);
+    try {
+      await wrapSave(config.type, config.title.slice(0, -1))();
+      setIsModalOpen(false);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteItem = async (item: CatalogItem) => {
+    if (isDeleteConfirming === item.id) {
+      setIsDeleting(true);
+      try {
+        config.setDraft(item as any);
+        await wrapDelete(config.type)();
+        setIsDeleteConfirming(null);
+      } finally {
+        setIsDeleting(false);
+      }
+    } else {
+      setIsDeleteConfirming(item.id);
+    }
+  };
+
+  const handleToggleVisibility = (e: React.MouseEvent, item: CatalogItem) => {
+    e.stopPropagation();
+    void quickToggleCatalogEntity(config.type, item as any);
+  };
+
+  const hasAppliedFilters =
+    entitySearch !== '' || visibilityFilter !== 'all';
 
   return (
     <div className="space-y-6">
-      <Panel
-        title={`${config.title} catalog`}
-        eyebrow="Catalog"
-        actions={
-          <div className="flex items-center gap-2">
+      {/* Header section */}
+      <div className="rounded-lg border border-gray-200 bg-white">
+        <div className="border-b border-gray-200 bg-white px-4 py-4 md:px-6 md:py-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                إدارة {config.title}
+              </h1>
+              <p className="mt-1 text-sm text-gray-500">
+                {config.items.length} عنصر{config.items.length !== 1 ? 'ا' : ''}
+              </p>
+            </div>
             <button
               type="button"
-              className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
               onClick={handleCreateNew}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
             >
-              New
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-              onClick={() => void wrapSave(config.type, config.title.slice(0, -1))()}
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-2xl border border-red-200 bg-white px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
-              onClick={() => void wrapDelete(config.type)()}
-            >
-              Delete
+              ✚ إنشاء جديد
             </button>
           </div>
-        }
-      >
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
-          <SectionCard title="Items">
-            <div className="space-y-4">
-              <div className="grid gap-3">
-                <Field label="Search">
-                  <input
-                    className={textInputClass()}
-                    placeholder="Search by title, slug, or description…"
-                    value={entitySearch}
-                    onChange={(event) => setEntitySearch(event.target.value)}
-                  />
-                </Field>
-                <Field label="Visibility">
-                  <select
-                    className={textInputClass()}
-                    value={visibilityFilter}
-                    onChange={(event) => setVisibilityFilter(event.target.value as any)}
-                  >
-                    <option value="all">All items</option>
-                    <option value="visible">Visible only</option>
-                    <option value="hidden">Hidden only</option>
-                  </select>
-                </Field>
-              </div>
-
-              <div className="max-h-[420px] space-y-2 overflow-auto pr-1">
-                {config.items.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-600">
-                    Nothing here yet. Create your first entry using the <strong>New</strong> button.
-                  </div>
-                ) : (
-                  config.items.map((item) => {
-                    const isVisible = getEntityIsVisible(item);
-                    const isActive = item.id === config.draft.id;
-
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        className={`flex w-full items-center justify-between gap-3 rounded-2xl border px-3 py-2 text-left text-sm transition-colors ${
-                          isActive
-                            ? 'border-orange-300 bg-orange-50 text-slate-900'
-                            : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
-                        }`}
-                        onClick={() => config.setDraft(item as any)}
-                      >
-                        <div className="min-w-0">
-                          <p className="truncate font-semibold">{getEntityTitle(item)}</p>
-                          <p className="mt-0.5 truncate text-xs text-slate-500">
-                            {item.slug || 'No slug'}
-                          </p>
-                        </div>
-                        <StatusPill
-                          label={isVisible ? 'Visible' : 'Hidden'}
-                          tone={isVisible ? 'success' : 'warning'}
-                        />
-                        <ToggleField
-                          label=""
-                          checked={isVisible}
-                          onChange={() => void quickToggleCatalogEntity(config.type, item as any)}
-                        />
-                      </button>
-                    );
-                  })
-                )}
-              </div>
-            </div>
-          </SectionCard>
-
-          <SectionCard title="Editor">
-            {config.type === 'product' && (
-              <ProductDraftForm
-                draft={config.draft as Product}
-                categories={categories}
-                onChange={config.setDraft as (draft: Product) => void}
-              />
-            )}
-            {config.type === 'category' && (
-              <CategoryDraftForm
-                draft={config.draft as Category}
-                onChange={config.setDraft as (draft: Category) => void}
-              />
-            )}
-            {config.type === 'service' && (
-              <ServiceDraftForm
-                draft={config.draft as Service}
-                categories={categories}
-                onChange={config.setDraft as (draft: Service) => void}
-              />
-            )}
-            {config.type === 'post' && (
-              <BlogDraftForm
-                draft={config.draft as BlogPost}
-                onChange={config.setDraft as (draft: BlogPost) => void}
-              />
-            )}
-          </SectionCard>
         </div>
-      </Panel>
+
+        {/* Toolbar */}
+        <div className="border-b border-gray-200 bg-gray-50 px-4 py-4 md:px-6">
+          <CatalogToolbar
+            search={entitySearch}
+            onSearchChange={handleSearchChange}
+            visibilityFilter={visibilityFilter}
+            onVisibilityFilterChange={handleVisibilityFilterChange}
+            hasAppliedFilters={hasAppliedFilters}
+            onClearFilters={handleClearFilters}
+          />
+        </div>
+
+        {/* Table */}
+        <CatalogTable
+          items={paginatedItems}
+          onEditItem={handleEditItem}
+          onToggleVisibility={handleToggleVisibility}
+          onDeleteItem={handleDeleteItem}
+          getTitle={getEntityTitle}
+          getSlug={(item) => item.slug || ''}
+          getIsVisible={getEntityIsVisible}
+          emptyMessage={
+            config.items.length === 0 && !hasAppliedFilters
+              ? 'لا توجد عناصر. اضغط "إنشاء جديد" للبدء.'
+              : 'لا توجد نتائج تطابق بحثك.'
+          }
+        />
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsPerPage={ITEMS_PER_PAGE}
+            totalItems={config.items.length}
+          />
+        )}
+      </div>
+
+      {/* Edit Modal */}
+      <CatalogEditModal
+        isOpen={isModalOpen}
+        title={
+          config.draft.id
+            ? `تعديل ${config.type === 'product' ? 'منتج' : config.type === 'category' ? 'قسم' : config.type === 'service' ? 'خدمة' : 'مقالة'}`
+            : `إنشاء ${config.type === 'product' ? 'منتج' : config.type === 'category' ? 'قسم' : config.type === 'service' ? 'خدمة' : 'مقالة'} جديد`
+        }
+        subtitle={
+          config.draft.id
+            ? `${getEntityTitle(config.draft)}`
+            : undefined
+        }
+        onClose={() => {
+          setIsModalOpen(false);
+          setIsDeleteConfirming(null);
+        }}
+        onSave={handleSaveModal}
+        isSaving={isSaving}
+      >
+        {/* Delete button in modal */}
+        {config.draft.id && (
+          <div>
+            {isDeleteConfirming === config.draft.id ? (
+              <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+                <p className="text-sm font-medium text-red-900">
+                  هل أنت متأكد من حذف هذا العنصر؟ هذا الإجراء لا يمكن التراجع عنه.
+                </p>
+                <div className="mt-3 flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsDeleteConfirming(null)}
+                    disabled={isDeleting}
+                    className="text-xs font-medium text-red-700 hover:text-red-900 transition-colors"
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void handleDeleteItem(config.draft as any)}
+                    disabled={isDeleting}
+                    className={`px-2 py-1 text-xs font-medium text-white rounded transition-colors ${
+                      isDeleting
+                        ? 'bg-red-400 cursor-not-allowed'
+                        : 'bg-red-600 hover:bg-red-700'
+                    }`}
+                    aria-busy={isDeleting}
+                  >
+                    {isDeleting ? 'جاري الحذف...' : 'تأكيد الحذف'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsDeleteConfirming(config.draft.id)}
+                className="mb-6 w-full rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                🗑️ حذف هذا العنصر
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Form */}
+        <CatalogEditor
+          type={config.type}
+          draft={config.draft as any}
+          categories={categories}
+          onChange={config.setDraft as any}
+        />
+      </CatalogEditModal>
     </div>
   );
 }
-

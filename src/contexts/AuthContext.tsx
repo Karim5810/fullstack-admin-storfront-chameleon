@@ -78,7 +78,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    void safeRefresh();
+    // Defer initial refresh to avoid blocking React scheduler
+    const timeoutId = setTimeout(() => {
+      void safeRefresh();
+    }, 0);
 
     const {
       data: { subscription },
@@ -97,6 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => {
       isMounted = false;
+      clearTimeout(timeoutId);
       subscription.unsubscribe();
     };
   }, []);

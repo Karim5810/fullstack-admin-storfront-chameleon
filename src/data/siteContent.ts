@@ -23,7 +23,7 @@ export const defaultSiteSettings: SiteSettings = {
   },
   header: {
     logoTitle: 'الريان',
-    logoSubtitle: 'Industrial & Safety',
+    logoSubtitle: 'الصناعة والسلامة',
     searchPlaceholder: 'ابحث عن المنتجات، الخدمات، أو الفئات...',
     allCategoriesLabel: 'جميع الفئات',
     searchButtonLabel: 'بحث',
@@ -34,7 +34,7 @@ export const defaultSiteSettings: SiteSettings = {
     loginLabel: 'تسجيل الدخول',
     registerLabel: 'حساب جديد',
     logoutLabel: 'تسجيل الخروج',
-    adminLabel: 'Admin',
+    adminLabel: 'لوحة الإدارة',
     welcomePrefix: 'مرحباً،',
   },
   navbar: {

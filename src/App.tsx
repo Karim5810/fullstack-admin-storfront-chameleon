@@ -166,7 +166,7 @@ function AppShell() {
       <Header />
       <Navbar />
 
-      <main className="flex-grow">
+      <main className="grow">
         <AppRoutes />
       </main>
 

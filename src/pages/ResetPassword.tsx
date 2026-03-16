@@ -92,6 +92,7 @@ export default function ResetPassword() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     name="newPassword"
+                    autoComplete="new-password"
                     value={formData.newPassword}
                     onChange={handleChange}
                     className="w-full bg-(--d3) border border-(--border) text-white p-3 rounded-lg pr-12 focus:outline-none focus:border-(--o)"
@@ -129,6 +130,7 @@ export default function ResetPassword() {
                 <input
                   type="password"
                   name="confirmPassword"
+                  autoComplete="new-password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className="w-full bg-(--d3) border border-(--border) text-white p-3 rounded-lg focus:outline-none focus:border-(--o)"

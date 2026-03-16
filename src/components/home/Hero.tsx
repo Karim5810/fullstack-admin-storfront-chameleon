@@ -9,7 +9,7 @@ function HeroVisual({ index, image }: { index: number; image?: string }) {
       <img
         src={image}
         alt=""
-        className="h-auto max-h-[420px] w-auto max-w-[520px] rounded-[32px] border border-[rgba(255,107,0,0.16)] object-cover shadow-[0_24px_80px_rgba(15,23,42,0.45)]"
+        className="h-auto max-h-[200px] w-full max-w-[320px] rounded-2xl border border-[rgba(255,107,0,0.16)] object-cover shadow-lg md:max-h-[420px] md:max-w-[520px] md:rounded-[32px] md:shadow-[0_24px_80px_rgba(15,23,42,0.45)]"
         loading="lazy"
       />
     );

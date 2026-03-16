@@ -39,8 +39,8 @@ export default function Header() {
 
   return (
     <>
-      <header className="site-header h-24">
-        <div className="h-inner h-24">
+      <header className="site-header h-16 md:h-20 lg:h-24">
+        <div className="h-inner h-16 md:h-20 lg:h-24">
           <button type="button" className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(true)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="12" x2="21" y2="12" />
@@ -50,7 +50,11 @@ export default function Header() {
           </button>
 
           <Link to="/" className="logo">
-            <img src="/logo-192.png" alt={header.logoTitle} style={{ height: '95px', width: 'auto' }} />
+            <img
+              src="/logo-192.png"
+              alt={header.logoTitle}
+              className="h-12 w-auto md:h-[72px] lg:h-[95px]"
+            />
             <div className="logo-words" style={{ marginLeft: '10px' }}>
               
             </div>

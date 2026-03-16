@@ -41,7 +41,15 @@ export type DashboardTab =
   | 'orders'
   | 'quotes'
   | 'leads'
-  | 'customers';
+  | 'customers'
+  | 'cms-products'
+  | 'cms-orders'
+  | 'cms-customers'
+  | 'cms-content'
+  | 'cms-media'
+  | 'cms-promotions'
+  | 'cms-navigation'
+  | 'cms-settings';
 
 export type VisibilityFilter = 'all' | 'visible' | 'hidden';
 export type CatalogEntityType = 'product' | 'category' | 'service' | 'post';

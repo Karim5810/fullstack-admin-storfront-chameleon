@@ -2,6 +2,12 @@ import type { BlogPost, Product, Service } from '../types';
 
 export const FALLBACK_IMAGE = '/logo-192.png';
 
+export const withFallbackImage = (images: string[], fallback: string = FALLBACK_IMAGE): string[] => {
+  const filtered = images.filter((img) => img && img.trim());
+  return filtered.length > 0 ? filtered : [fallback];
+};
+
+
 export const slugify = (value: string) =>
   value
     .trim()
@@ -43,7 +49,14 @@ export const normalizeSearchText = (value: string) =>
     .toLowerCase()
     .trim();
 
-export const withFallbackImage = (images: string[]) => {
-  const candidates = images.filter(Boolean);
-  return candidates.length > 0 ? candidates : [FALLBACK_IMAGE];
-};
+export const matchesSearch = (text: string, search: string) =>
+  normalizeSearchText(text).includes(normalizeSearchText(search));
+
+export const filterProducts = (products: Product[], search: string) =>
+  products.filter((product) => matchesSearch(product.title, search) || matchesSearch(product.description, search));
+
+export const filterBlogPosts = (posts: BlogPost[], search: string) =>
+  posts.filter((post) => matchesSearch(post.title, search) || matchesSearch(post.excerpt, search));
+
+export const filterServices = (services: Service[], search: string) =>
+  services.filter((service) => matchesSearch(service.title, search) || matchesSearch(service.description, search));

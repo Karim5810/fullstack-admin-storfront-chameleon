@@ -133,8 +133,8 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
       <div className="modal modal--xl">
         <div className="modal-header">
           <div>
-            <h2 className="admin-modal-title">Bulk Product Import</h2>
-            <p className="admin-modal-subtitle">Step {step} of 3</p>
+            <h2 className="admin-modal-title">استيراد منتجات الأما،</h2>
+            <p className="admin-modal-subtitle">خطوة {step} من 3</p>
           </div>
           <button className="btn btn-sm btn-secondary" onClick={closeModal}>
             <Icon name="x" size={14} />
@@ -143,9 +143,9 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
 
         <div className="modal-body">
           <div className="admin-chip-row">
-            <span className={`badge ${step === 1 ? 'badge-yellow' : 'badge-gray'}`}>1. File Parsing</span>
-            <span className={`badge ${step === 2 ? 'badge-yellow' : 'badge-gray'}`}>2. Column Mapping</span>
-            <span className={`badge ${step === 3 ? 'badge-yellow' : 'badge-gray'}`}>3. Execution</span>
+            <span className={`badge ${step === 1 ? 'badge-yellow' : 'badge-gray'}`}>1. تحليل الملف</span>
+            <span className={`badge ${step === 2 ? 'badge-yellow' : 'badge-gray'}`}>2. تمابل الأعمدة</span>
+            <span className={`badge ${step === 3 ? 'badge-yellow' : 'badge-gray'}`}>3. التنفيذ</span>
           </div>
 
           {step === 1 ? (
@@ -153,7 +153,7 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
               <div className="admin-card-head">
                 <div className="admin-card-head__copy">
                   <div className="admin-heading-sm">رفع الملف</div>
-                  <div className="admin-meta">Upload CSV/Excel. The system will only parse headers and first data row at this stage.</div>
+                  <div className="admin-meta">رفع CSV/Excel. سيقوم النظام بتحليل رؤوس الأعمدة وأول صف بيانات فقط في هذه المرحلة.</div>
                 </div>
               </div>
 
@@ -165,12 +165,12 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
                 disabled={parsing}
               />
 
-              <div className="admin-inline-note">Supported: <code>.csv</code>, <code>.xlsx</code>, <code>.xls</code></div>
+              <div className="admin-inline-note">المدعوم: <code>.csv</code>, <code>.xlsx</code>, <code>.xls</code></div>
 
               {parsing ? (
                 <div className="admin-spinner-inline">
                   <div className="spinner spinner--xs" />
-                  Parsing file preview...
+                  جاري تحليل معاينة الملف...
                 </div>
               ) : null}
             </div>
@@ -190,10 +190,10 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
                 <table>
                   <thead>
                     <tr>
-                      <th>Column Name In Imported File</th>
-                      <th>System Property</th>
-                      <th>Example Imported Value</th>
-                      <th>Modifier (Optional)</th>
+                      <th>اسم العمود في الملف المستورد</th>
+                      <th>خاصية نظام</th>
+                      <th>مثال قيمة مستوردة</th>
+                      <th>معدل (اختياري)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -229,25 +229,25 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
               </div>
 
               <div className="admin-inline-note">
-                Modifier examples: <code>+10</code>, <code>*1.15</code>, <code>trim</code>, <code>ucfirst</code>, <code>upper</code>, <code>lower</code>.
-                Use <code>|</code> to chain multiple modifiers.
+                أمثلة معدل: <code>+10</code>, <code>*1.15</code>, <code>trim</code>, <code>ucfirst</code>, <code>upper</code>, <code>lower</code>.
+                استخدم <code>|</code> لربط معدلات متعددة.
               </div>
               <div className="admin-field-note">
-                To update existing products, map a file column to <code>Product ID (Update Target)</code>.
+                لتحديث منتجات موجودة، ربط عمود ملف بـ <code>رقم المنتج للتحديث</code>.
               </div>
 
               <div className="admin-split">
-                <span className="admin-meta">{mappedCount} mapped / {preview.headers.length} total columns</span>
+                <span className="admin-meta">{mappedCount} مظروب / {preview.headers.length} الأعمدة بالكامل</span>
                 <button className="btn btn-primary" onClick={importData} disabled={importing}>
                   {importing ? (
                     <>
                       <div className="spinner spinner--xs" />
-                      Importing...
+                      جاري الاستيراد...
                     </>
                   ) : (
                     <>
                       <Icon name="upload" size={14} />
-                      Import Data
+                      استيراد البيانات
                     </>
                   )}
                 </button>
@@ -259,27 +259,27 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
             <div className="card">
               <div className="admin-card-head">
                 <div className="admin-card-head__copy">
-                  <div className="admin-heading-sm">Import Summary</div>
-                  <div className="admin-meta">ملخص التنفيذ النهائي وحالة الصفوف المستوردة.</div>
+                  <div className="admin-heading-sm">ملخص الاستيراد</div>
+                  <div className="admin-meta">ملخص التنفيذ النهايئي وحالة الصفوف المستوردة.</div>
                 </div>
               </div>
 
               <div className="admin-summary-grid">
-                <div className="badge badge-blue admin-table-badge">Rows: {summary.totalRows}</div>
-                <div className="badge badge-green admin-table-badge">Inserted: {summary.inserted}</div>
-                <div className="badge badge-yellow admin-table-badge">Updated: {summary.updated}</div>
-                <div className="badge badge-red admin-table-badge">Failed: {summary.failed}</div>
+                <div className="badge badge-blue admin-table-badge">الصفوف: {summary.totalRows}</div>
+                <div className="badge badge-green admin-table-badge">تم الإدراج: {summary.inserted}</div>
+                <div className="badge badge-yellow admin-table-badge">تم التحديث: {summary.updated}</div>
+                <div className="badge badge-red admin-table-badge">فشل: {summary.failed}</div>
               </div>
 
-              <div className="admin-inline-note">Skipped rows (empty after mapping): {summary.skipped}</div>
+              <div className="admin-inline-note">الصفوف المقفولة (راغمة بعد التعيين): {summary.skipped}</div>
 
               {summary.errors.length > 0 ? (
                 <div className="admin-card-section">
-                  <div className="admin-section-title">Error details (first 20)</div>
+                  <div className="admin-section-title">بيانات الأخطاء (أول 20)</div>
                   <div className="admin-scroll-panel">
                     {summary.errors.slice(0, 20).map((error, index) => (
                       <div key={`${error.rowNumber}-${index}`} className="admin-table-sub">
-                        Row {error.rowNumber}: {error.message}
+                        الصف {error.rowNumber}: {error.message}
                       </div>
                     ))}
                   </div>
@@ -290,10 +290,10 @@ export default function ProductBulkImportModal({ open, onClose, onImported }) {
         </div>
 
         <div className="modal-footer admin-modal-actions-spread">
-          <button className="btn btn-secondary" onClick={closeModal}>Close</button>
+          <button className="btn btn-secondary" onClick={closeModal}>إغلاق</button>
           {step > 1 && step < 3 ? (
             <button className="btn btn-secondary" onClick={() => setStep((current) => current - 1)} disabled={importing}>
-              Back
+              رجوع
             </button>
           ) : null}
           {step === 3 ? (

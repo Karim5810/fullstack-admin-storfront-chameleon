@@ -26,7 +26,7 @@ type NavSection = {
 
 export const navSections: NavSection[] = [
   {
-    title: 'Overview',
+    title: 'لوحة الخدمات',
     items: [
       {
         id: 'overview',
@@ -43,7 +43,7 @@ export const navSections: NavSection[] = [
     ],
   },
   {
-    title: 'Catalog',
+    title: 'الكاتالوج',
     items: [
       {
         id: 'products',
@@ -72,7 +72,7 @@ export const navSections: NavSection[] = [
     ],
   },
   {
-    title: 'Sales & CRM',
+    title: 'المبيعات وإدارة العلاقات',
     items: [
       {
         id: 'orders',
@@ -108,7 +108,7 @@ export function formatTabCount(id: DashboardTab, raw?: string) {
     // Show just a short "time" style for updatedAt strings, or fallback to raw
     const date = new Date(raw);
     if (!Number.isNaN(date.getTime())) {
-      return date.toLocaleDateString(undefined, {
+      return date.toLocaleDateString('ar-EG', {
         month: 'short',
         day: '2-digit',
       });

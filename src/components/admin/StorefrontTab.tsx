@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Save, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { api } from '../../api';
-import { Field, Panel, SectionCard, ToggleField, textInputClass } from './AdminShell';
+import { Field, SectionCard, ToggleField, textInputClass } from './AdminShell';
 import type { useAdminDashboardController } from '../../hooks/useAdminDashboardController';
 import type { FooterColumn, FooterContactItem, HeroSlide, PromoCard, SiteFeatureItem, SiteLink, SiteSocialLink } from '../../types';
 import type { ImageRegistryEntry } from '../../services/api/imageRegistry';
@@ -77,26 +77,26 @@ function ImageRegistryEditor() {
 
   if (loading) {
     return (
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 text-center text-slate-500">
+      <div className="rounded-lg border border-gray-200 bg-white p-6 text-center text-gray-500">
         جاري التحميل...
       </div>
     );
   }
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-4">
+    <div className="rounded-lg border border-gray-200 bg-white p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold text-slate-900">سجل الصور</div>
-          <div className="text-xs text-slate-500">
-            ربط الكود بعنوان الصورة. herot-1 للهيرو الأول، Cat-1 للفئة الأولى، إلخ.
+          <div className="text-sm font-semibold text-gray-900">سجل الصور</div>
+          <div className="text-xs text-gray-500">
+            ربط الأكواد بعناوين صور الويب (على سبيل المثال hero-1)
           </div>
         </div>
         <button
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-2xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-60"
         >
           <Save className="h-4 w-4" />
           {saving ? 'جاري الحفظ...' : 'حفظ'}
@@ -104,8 +104,8 @@ function ImageRegistryEditor() {
       </div>
       <div className="space-y-2">
         {entries.map((entry, index) => (
-          <div key={entry.code} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <code className="w-20 shrink-0 rounded bg-slate-200 px-2 py-1 text-xs font-mono text-slate-800">
+          <div key={entry.code} className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
+            <code className="w-20 shrink-0 rounded bg-gray-200 px-2 py-1 text-xs font-mono text-gray-800">
               {entry.code}
             </code>
             <span className="text-slate-400">|</span>
@@ -135,7 +135,7 @@ function RowActions({
   onRemove: () => void;
 }) {
   const btn =
-    'inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-40';
+    'inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white p-2 text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-40';
   return (
     <div className="flex items-center gap-2">
       <button type="button" className={btn} onClick={() => onMove(-1)} disabled={index === 0} aria-label="Move up">
@@ -169,20 +169,20 @@ export function StorefrontTab({ controller, onPublish }: Props) {
     | 'footerPolicies'
     | 'footerPayments';
   const advancedSections: Array<{ id: AdvancedSectionId; label: string; helper: string }> = [
-    { id: 'images', label: 'صور المتجر', helper: 'Hero & Categories images' },
-    { id: 'hero', label: 'Hero slides', helper: 'Homepage slideshow' },
-    { id: 'trust', label: 'Trust strip', helper: 'Hero support bullets' },
-    { id: 'promo', label: 'Promo cards', helper: 'Homepage promo grid' },
-    { id: 'brands', label: 'Brands', helper: 'Homepage brands list' },
-    { id: 'certs', label: 'Certificates', helper: 'Homepage assurances' },
-    { id: 'stats', label: 'Stats', helper: 'Homepage counters' },
-    { id: 'topbarSocials', label: 'Topbar socials', helper: 'Top strip icons' },
-    { id: 'navbar', label: 'Navbar items', helper: 'Main navigation links' },
-    { id: 'footerSocials', label: 'Footer socials', helper: 'Footer social icons' },
-    { id: 'footerContacts', label: 'Footer contacts', helper: 'Footer contact rows' },
-    { id: 'footerColumns', label: 'Footer columns', helper: 'Footer link groups' },
-    { id: 'footerPolicies', label: 'Footer policies', helper: 'Bottom policy links' },
-    { id: 'footerPayments', label: 'Payment methods', helper: 'Footer payment chips' },
+    { id: 'images', label: 'معرض الصور', helper: 'صور البانر والأقسام' },
+    { id: 'hero', label: 'البانر الرئيسي', helper: 'الشرائح المتحركة للصفحة الرئيسية' },
+    { id: 'trust', label: 'شريط الموثوقية', helper: 'نقاط المزايا أسفل البانر' },
+    { id: 'promo', label: 'البطاقات الترويجية', helper: 'شبكة العروض الترويجية' },
+    { id: 'brands', label: 'العلامات التجارية', helper: 'قائمة العلامات التجارية للصفحة الرئيسية' },
+    { id: 'certs', label: 'الشهادات والضمانات', helper: 'أيقونات الثقة والضمانات' },
+    { id: 'stats', label: 'الإحصائيات', helper: 'عدادات الأرقام للصفحة الرئيسية' },
+    { id: 'topbarSocials', label: 'التواصل الاجتماعي بالشريط العلوي', helper: 'أيقونات التواصل في أعلى الصفحة' },
+    { id: 'navbar', label: 'القائمة الرئيسية', helper: 'روابط التصفح الأساسية' },
+    { id: 'footerSocials', label: 'التواصل الاجتماعي أسفل الصفحة', helper: 'أيقونات التواصل أسفل الصفحة' },
+    { id: 'footerContacts', label: 'بيانات الاتصال', helper: 'معلومات التواصل أسفل الصفحة' },
+    { id: 'footerColumns', label: 'روابط أسفل الصفحة', helper: 'مجموعات الروابط (أعمدة الفوتر)' },
+    { id: 'footerPolicies', label: 'سياسات المتجر', helper: 'روابط الشروط والأحكام' },
+    { id: 'footerPayments', label: 'طرق الدفع', helper: 'أيقونات وسائل الدفع' },
   ];
   const [advancedSection, setAdvancedSection] = useState<AdvancedSectionId>('hero');
   const lastPaymentMethods = useRef<string[] | null>(null);
@@ -220,8 +220,6 @@ export function StorefrontTab({ controller, onPublish }: Props) {
       });
     }
   };
-
-  const sectionDescriptionClass = 'text-sm leading-6 text-slate-600';
 
   const advancedEnabled = useMemo(() => {
     const anyVisible = <T extends { isVisible: boolean }>(items: T[]) => items.some((item) => item.isVisible);
@@ -354,190 +352,160 @@ export function StorefrontTab({ controller, onPublish }: Props) {
     }
   };
 
+  const mainTabs = [
+    { id: 'general' as const, label: 'عام' },
+    { id: 'homepage' as const, label: 'الصفحة الرئيسية' },
+    { id: 'header' as const, label: 'الرأس والتنقل' },
+    { id: 'footer' as const, label: 'التذييل' },
+  ] as const;
+  const [mainTab, setMainTab] = useState<'general' | 'homepage' | 'header' | 'footer'>('general');
+
+  const homepageSections = advancedSections.filter((s) => ['images', 'hero', 'trust', 'promo', 'brands', 'certs', 'stats'].includes(s.id));
+  const headerSections = advancedSections.filter((s) => ['images', 'topbarSocials', 'navbar'].includes(s.id));
+  const footerSections = advancedSections.filter((s) => ['footerSocials', 'footerContacts', 'footerColumns', 'footerPolicies', 'footerPayments'].includes(s.id));
+
+  const setMainTabWithSection = (tab: typeof mainTab) => {
+    setMainTab(tab);
+    if (tab === 'homepage' && !homepageSections.some((s) => s.id === advancedSection)) setAdvancedSection('hero');
+    if (tab === 'header' && !headerSections.some((s) => s.id === advancedSection)) setAdvancedSection('topbarSocials');
+    if (tab === 'footer' && !footerSections.some((s) => s.id === advancedSection)) setAdvancedSection('footerSocials');
+  };
+
+  const visibilityToggles = [
+    { key: 'hero', label: 'البانر الرئيسي', checked: draft.home.hero.isVisible ?? true },
+    { key: 'productsSection', label: 'المنتجات', checked: draft.home.productsSection.isVisible ?? true },
+    { key: 'trustStrip', label: 'شريط الموثوقية', checked: draft.home.trustStrip.isVisible ?? true },
+    { key: 'promoGrid', label: 'البطاقات الترويجية', checked: draft.home.promoGrid.isVisible ?? true },
+    { key: 'brandsSection', label: 'العلامات التجارية', checked: draft.home.brandsSection.isVisible ?? true },
+    { key: 'statsSection', label: 'الإحصائيات', checked: draft.home.statsSection.isVisible ?? true },
+    { key: 'certsSection', label: 'الشهادات والضمانات', checked: draft.home.certsSection.isVisible ?? true },
+    { key: 'servicesSection', label: 'الخدمات', checked: draft.home.servicesSection.isVisible ?? true },
+    { key: 'blogSection', label: 'المدونة', checked: draft.home.blogSection.isVisible ?? true },
+    { key: 'newsletterSection', label: 'القائمة البريدية', checked: draft.home.newsletterSection.isVisible ?? true },
+    { key: 'appSection', label: 'تطبيق الجوال', checked: draft.home.appSection.isVisible ?? true },
+    { key: 'dealsSection', label: 'العروض', checked: draft.home.dealsSection.isVisible ?? true },
+    { key: 'categoriesSection', label: 'الأقسام', checked: draft.home.categoriesSection.isVisible ?? true },
+  ];
+
   return (
     <div className="space-y-6">
-      <Panel
-        title="Storefront settings"
-        eyebrow="Storefront"
-        actions={
-          <button type="button" className="btn-fire" onClick={() => void onPublish()} disabled={controller.isSaving}>
-            <Save className="h-4 w-4" />
-            {controller.isSaving ? 'Publishing…' : 'Publish changes'}
-          </button>
-        }
-      >
-        <div className="space-y-6">
-          <SectionCard title="Visibility">
-            <ToggleField
-              label="Show hero slideshow"
-              checked={draft.home.hero.isVisible ?? true}
-              onChange={(v) => setField('home', 'hero', v)}
-            />
-            <ToggleField
-              label="Show featured products"
-              checked={draft.home.productsSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'productsSection', v)}
-            />
-            <ToggleField
-              label="Show trust strip"
-              checked={draft.home.trustStrip.isVisible ?? true}
-              onChange={(v) => setField('home', 'trustStrip', v)}
-            />
-            <ToggleField
-              label="Show promo cards"
-              checked={draft.home.promoGrid.isVisible ?? true}
-              onChange={(v) => setField('home', 'promoGrid', v)}
-            />
-            <ToggleField
-              label="Show brands"
-              checked={draft.home.brandsSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'brandsSection', v)}
-            />
-            <ToggleField
-              label="Show stats"
-              checked={draft.home.statsSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'statsSection', v)}
-            />
-            <ToggleField
-              label="Show certificates"
-              checked={draft.home.certsSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'certsSection', v)}
-            />
-            <ToggleField
-              label="Show products"
-              checked={draft.home.productsSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'productsSection', v)}
-            />
-            <ToggleField
-              label="Show services"
-              checked={draft.home.servicesSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'servicesSection', v)}
-            />
-            <ToggleField
-              label="Show blog"
-              checked={draft.home.blogSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'blogSection', v)}
-            />
-            <ToggleField
-              label="Show newsletter"
-              checked={draft.home.newsletterSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'newsletterSection', v)}
-            />
-            <ToggleField
-              label="Show app"
-              checked={draft.home.appSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'appSection', v)}
-            />
-            <ToggleField
-              label="Show deals"
-              checked={draft.home.dealsSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'dealsSection', v)}
-            />
-            <ToggleField
-              label="Show categories"
-              checked={draft.home.categoriesSection.isVisible ?? true}
-              onChange={(v) => setField('home', 'categoriesSection', v)}
-            />
-          </SectionCard>
+      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+        <div className="border-b border-gray-200 px-6 py-4">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">إعدادات المتجر</h2>
+              <p className="mt-0.5 text-sm text-gray-500">تكوين الصفحة الرئيسية والرأس والتذييل والأقسام المحتوى</p>
+            </div>
+            <button
+              type="button"
+              className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-60"
+              onClick={() => void onPublish()}
+              disabled={controller.isSaving}
+            >
+              <Save className="mr-2 inline h-4 w-4" />
+              {controller.isSaving ? 'جاري النشر...' : 'نشر'}
+            </button>
+          </div>
 
-          <SectionCard title="Basic settings">
-            <Field label="Site name">
-              <input
-                className={`${textInputClass()} border-slate-200 bg-white text-slate-900`}
-                value={draft.header.logoTitle ?? ''}
-                onChange={(e) => setField('header', 'logoTitle', e.target.value)}
-              />
-            </Field>
-            <Field label="Contact strip phone">
-              <input
-                className={`${textInputClass()} border-slate-200 bg-white text-slate-900`}
-                value={draft.topbar.phone ?? ''}
-                onChange={(e) => setField('topbar', 'phone', e.target.value)}
-              />
-            </Field>
-            <Field label="Search placeholder">
-              <input
-                className={`${textInputClass()} border-slate-200 bg-white text-slate-900`}
-                value={draft.header.searchPlaceholder ?? ''}
-                onChange={(e) => setField('header', 'searchPlaceholder', e.target.value)}
-              />
-            </Field>
-            <Field label="Footer copyright">
-              <input
-                className={`${textInputClass()} border-slate-200 bg-white text-slate-900`}
-                value={draft.footer.bottomText ?? ''}
-                onChange={(e) => setField('footer', 'bottomText', e.target.value)}
-              />
-            </Field>
-          </SectionCard>
+          {/* Tab bar */}
+          <div className="mt-4 flex gap-1 border-b border-gray-200 -mb-px">
+            {mainTabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setMainTabWithSection(tab.id)}
+                className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
+                  mainTab === tab.id
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-          <SectionCard title="Advanced settings">
-            <p className={sectionDescriptionClass}>
-              Manage slideshow content, links, badges, and other structured data using form inputs. Changes are saved as the same underlying data model — no JSON editing.
-            </p>
-
-            <div className="mt-4 grid gap-4 xl:grid-cols-[280px_minmax(0,1fr)]">
-              <div className="rounded-3xl border border-slate-200 bg-white p-3">
-                <Field label="Section">
-                  <select
-                    className={textInputClass()}
-                    value={advancedSection}
-                    onChange={(e) => setAdvancedSection(e.target.value as AdvancedSectionId)}
-                  >
-                    {advancedSections.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.label}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
-
-                <div className="mt-3 hidden space-y-1 xl:block">
-                  {advancedSections.map((s) => {
-                    const active = advancedSection === s.id;
-                    return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => setAdvancedSection(s.id)}
-                        className={`w-full rounded-2xl border px-3 py-2 text-left transition-colors ${
-                          active
-                            ? 'border-orange-300 bg-orange-50 text-slate-900'
-                            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-                        }`}
-                      >
-                        <div className="text-sm font-semibold">{s.label}</div>
-                        <div className="text-xs text-slate-500">{s.helper}</div>
-                      </button>
-                    );
-                  })}
+        <div className="p-6">
+          {/* General tab */}
+          {mainTab === 'general' && (
+            <div className="space-y-8">
+              <div>
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500">الإعدادات الأساسية</h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Field label="اسم الموقع">
+                    <input className={textInputClass()} value={draft.header.logoTitle ?? ''} onChange={(e) => setField('header', 'logoTitle', e.target.value)} />
+                  </Field>
+                  <Field label="هاتف الاتصال">
+                    <input className={textInputClass()} value={draft.topbar.phone ?? ''} onChange={(e) => setField('topbar', 'phone', e.target.value)} />
+                  </Field>
+                  <Field label="نص عنصر البحث">
+                    <input className={textInputClass()} value={draft.header.searchPlaceholder ?? ''} onChange={(e) => setField('header', 'searchPlaceholder', e.target.value)} />
+                  </Field>
+                  <Field label="نص حقوق النسخ للتذييل">
+                    <input className={textInputClass()} value={draft.footer.bottomText ?? ''} onChange={(e) => setField('footer', 'bottomText', e.target.value)} />
+                  </Field>
                 </div>
               </div>
 
-              <div className="space-y-6">
-                {advancedSection !== 'images' ? (
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4">
+              <div>
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500">رؤية الأقسام</h3>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {visibilityToggles.map((t) => (
                     <ToggleField
-                      label="Section enabled"
-                      description="Turn this section on/off without deleting its content."
+                      key={t.key}
+                      label={t.label}
+                      checked={t.checked}
+                      onChange={(v) => setField('home', t.key, v)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Homepage tab - sections sidebar + content */}
+          {mainTab === 'homepage' && (
+            <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
+              <nav className="space-y-1 rounded-lg border border-gray-200 bg-gray-50 p-2">
+                {homepageSections.map((s) => {
+                  const active = advancedSection === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setAdvancedSection(s.id)}
+                      className={`w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
+                        active ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-600 hover:bg-white/80'
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  );
+                })}
+              </nav>
+              <div className="min-w-0">
+                {advancedSection !== 'images' ? (
+                  <div className="mb-4">
+                    <ToggleField
+                      label="تمكين القسم"
+                      description="إظهار/إخفاء هذا القسم على الصفحة الرئيسية."
                       checked={advancedEnabled}
                       onChange={(v) => setAdvancedEnabled(v)}
                     />
                   </div>
                 ) : null}
-
-                {advancedSection === 'images' ? (
-                  <ImageRegistryEditor />
-                ) : advancedSection === 'hero' ? (
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4">
+                {advancedSection === 'images' && <ImageRegistryEditor />}
+                {advancedSection === 'hero' && (
+                  <div className="rounded-lg border border-gray-200 bg-white p-4">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <div>
-                        <div className="text-sm font-semibold text-slate-900">Hero slides</div>
-                        <div className="text-xs text-slate-500">Homepage hero slideshow cards.</div>
+                        <div className="text-sm font-semibold text-gray-900">شرائح البانر الرئيسي</div>
+                        <div className="text-xs text-gray-500">البطاقات المتحركة للبانر الرئيسي.</div>
                       </div>
                       <button
                         type="button"
-                        className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                        className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50"
                         onClick={() =>
                           controller.setHeroSlides([
                             ...controller.heroSlides,
@@ -555,20 +523,20 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                           ])
                         }
                       >
-                        <Plus className="h-4 w-4" /> Add slide
+                        <Plus className="h-4 w-4" /> إضافة شريحة
                       </button>
                     </div>
 
                     <div className="space-y-3">
                       {controller.heroSlides.map((slide, index) => (
-                        <div key={slide.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                        <div key={slide.id} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                           <div className="mb-3 flex items-center justify-between gap-3">
                             <div className="min-w-0">
-                              <div className="truncate text-sm font-semibold text-slate-900">{slide.title || 'Untitled slide'}</div>
-                              <div className="text-xs text-slate-500">ID: {slide.id}</div>
+                              <div className="truncate text-sm font-medium text-gray-900">{slide.title || 'شريحة بدون عنوان'}</div>
+                              <div className="text-xs text-gray-500">ID: {slide.id}</div>
                             </div>
                             <div className="flex items-center gap-3">
-                              <label className="flex items-center gap-2 text-sm text-slate-700">
+                              <label className="flex items-center gap-2 text-sm text-gray-700">
                                 <input
                                   type="checkbox"
                                   checked={slide.isVisible}
@@ -578,7 +546,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                                     controller.setHeroSlides(next);
                                   }}
                                 />
-                                Visible
+                                مرئي
                               </label>
                               <RowActions
                                 index={index}
@@ -590,7 +558,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                           </div>
 
                           <div className="grid gap-3 md:grid-cols-2">
-                            <Field label="Eyebrow">
+                            <Field label="العنوان العلوي">
                               <input
                                 className={textInputClass()}
                                 value={slide.eyebrow}
@@ -601,7 +569,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                                 }}
                               />
                             </Field>
-                            <Field label="Title">
+                            <Field label="العنوان">
                               <input
                                 className={textInputClass()}
                                 value={slide.title}
@@ -613,7 +581,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                               />
                             </Field>
                             <div className="md:col-span-2">
-                              <Field label="Description">
+                              <Field label="الوصف">
                                 <input
                                   className={textInputClass()}
                                   value={slide.description}
@@ -625,7 +593,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                                 />
                               </Field>
                             </div>
-                            <Field label="Primary button label">
+                            <Field label="نص زر العمل الرئيسي">
                               <input
                                 className={textInputClass()}
                                 value={slide.primaryLabel}
@@ -636,7 +604,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                                 }}
                               />
                             </Field>
-                            <Field label="Primary button href">
+                            <Field label="رابط زر العمل الرئيسي">
                               <input
                                 className={textInputClass()}
                                 value={slide.primaryHref}
@@ -647,7 +615,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                                 }}
                               />
                             </Field>
-                            <Field label="Secondary button label">
+                            <Field label="نص زر العمل الثانوي">
                               <input
                                 className={textInputClass()}
                                 value={slide.secondaryLabel}
@@ -658,7 +626,7 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                                 }}
                               />
                             </Field>
-                            <Field label="Secondary button href">
+                            <Field label="رابط زر العمل الثانوي">
                               <input
                                 className={textInputClass()}
                                 value={slide.secondaryHref}
@@ -674,37 +642,37 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                       ))}
 
                       {controller.heroSlides.length === 0 ? (
-                        <div className="rounded-3xl border border-dashed border-(--border) bg-(--d3) px-4 py-6 text-sm text-(--muted2)">
-                          No slides yet. Add one to start.
+                        <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-6 text-sm text-gray-600">
+                          لم تضف شرائح بعد. أضف واحدة للبدء.
                         </div>
                       ) : null}
                     </div>
                   </div>
-                ) : null}
+                )}
 
-                {advancedSection === 'trust' ? (
+                {advancedSection === 'trust' && (
                   <SimpleFeatureItemsEditor
-                    title="Trust strip"
-                    description="Small feature bullets shown below the hero."
+                    title="شريط الموثوقية"
+                    description="نقاط المزايا المعروضة أسفل البانر الرئيسي."
                     items={controller.trustItems}
                     onChange={controller.setTrustItems}
                   />
-                ) : null}
+                )}
 
-                {advancedSection === 'promo' ? (
+                {advancedSection === 'promo' && (
                   <PromoCardsEditor cards={controller.promoCards} onChange={controller.setPromoCards} />
-                ) : null}
+                )}
 
-                {advancedSection === 'brands' ? (
+                {advancedSection === 'brands' && (
                   <SimpleNameListEditor
-                    title="Brands"
-                    description="Brand list shown on the homepage."
+                    title="العلامات التجارية"
+                    description="قائمة العلامات التجارية المعروضة في الصفحة الرئيسية."
                     items={controller.brands}
                     onChange={controller.setBrands}
                     makeItem={() => ({ id: makeId('brand'), name: '', isVisible: true })}
-                    getLabel={(item) => item.name || 'Untitled brand'}
+                    getLabel={(item) => item.name || 'علامة تجارية بدون عنوان'}
                     renderFields={(item, index, next) => (
-                      <Field label="Name">
+                      <Field label="الاسم">
                         <input
                           className={textInputClass()}
                           value={item.name}
@@ -713,48 +681,92 @@ export function StorefrontTab({ controller, onPublish }: Props) {
                       </Field>
                     )}
                   />
-                ) : null}
+                )}
 
-                {advancedSection === 'certs' ? (
+                {advancedSection === 'certs' && (
                   <CertificatesEditor items={controller.certificates} onChange={controller.setCertificates} />
-                ) : null}
+                )}
 
-                {advancedSection === 'stats' ? (
+                {advancedSection === 'stats' && (
                   <StatsEditor items={controller.stats} onChange={controller.setStats} />
-                ) : null}
+                )}
 
-                {advancedSection === 'topbarSocials' ? (
-                  <LinksEditor title="Topbar socials" description="Social icons in the top bar." links={controller.topbarSocialLinks} onChange={controller.setTopbarSocialLinks} />
-                ) : null}
-
-                {advancedSection === 'navbar' ? (
-                  <LinksEditor title="Navbar items" description="Top navigation links." links={controller.navbarItems} onChange={controller.setNavbarItems} />
-                ) : null}
-
-                {advancedSection === 'footerSocials' ? (
-                  <LinksEditor title="Footer socials" description="Social icons in the footer." links={controller.footerSocialLinks} onChange={controller.setFooterSocialLinks} />
-                ) : null}
-
-                {advancedSection === 'footerContacts' ? (
-                  <FooterContactsEditor items={controller.footerContacts} onChange={controller.setFooterContacts} />
-                ) : null}
-
-                {advancedSection === 'footerColumns' ? (
-                  <FooterColumnsEditor columns={controller.footerColumns} onChange={controller.setFooterColumns} />
-                ) : null}
-
-                {advancedSection === 'footerPolicies' ? (
-                  <LinksEditor title="Footer policies" description="Policy links shown in the footer bottom bar." links={controller.footerPolicies} onChange={controller.setFooterPolicies} />
-                ) : null}
-
-                {advancedSection === 'footerPayments' ? (
-                  <PaymentMethodsEditor methods={controller.footerPayments} onChange={controller.setFooterPayments} />
-                ) : null}
               </div>
             </div>
-          </SectionCard>
+          )
+        }
+          {/* Header & Nav tab */}
+          {mainTab === 'header' && (
+            <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
+              <nav className="space-y-1 rounded-lg border border-gray-200 bg-gray-50 p-2">
+                {headerSections.map((s) => {
+                  const active = advancedSection === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setAdvancedSection(s.id)}
+                      className={`w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
+                        active ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-600 hover:bg-white/80'
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  );
+                })}
+              </nav>
+              <div className="min-w-0">
+                {advancedSection === 'images' && <ImageRegistryEditor />}
+                {advancedSection === 'topbarSocials' && (
+                  <LinksEditor title="التواصل الاجتماعي بالشريط العلوي" description="أيقونات التواصل الاجتماعي في أعلى الصفحة." links={controller.topbarSocialLinks} onChange={controller.setTopbarSocialLinks} />
+                )}
+                {advancedSection === 'navbar' && (
+                  <LinksEditor title="القائمة الرئيسية" description="روابط التصفح الأساسية." links={controller.navbarItems} onChange={controller.setNavbarItems} />
+                )}
+              </div>
+            </div>
+          )}
+          {/* Footer tab */}
+          {mainTab === 'footer' && (
+            <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
+              <nav className="space-y-1 rounded-lg border border-gray-200 bg-gray-50 p-2">
+                {footerSections.map((s) => {
+                  const active = advancedSection === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setAdvancedSection(s.id)}
+                      className={`w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors ${
+                        active ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-600 hover:bg-white/80'
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  );
+                })}
+              </nav>
+              <div className="min-w-0">
+                {advancedSection === 'footerSocials' && (
+                  <LinksEditor title="وسائل التواصل في التذييل" description="أيقونات وسائل التواصل الاجتماعي في التذييل." links={controller.footerSocialLinks} onChange={controller.setFooterSocialLinks} />
+                )}
+                {advancedSection === 'footerContacts' && (
+                  <FooterContactsEditor items={controller.footerContacts} onChange={controller.setFooterContacts} />
+                )}
+                {advancedSection === 'footerColumns' && (
+                  <FooterColumnsEditor columns={controller.footerColumns} onChange={controller.setFooterColumns} />
+                )}
+                {advancedSection === 'footerPolicies' && (
+                  <LinksEditor title="سياسات التذييل" description="روابط السياسة في شريط التذييل السفلي." links={controller.footerPolicies} onChange={controller.setFooterPolicies} />
+                )}
+                {advancedSection === 'footerPayments' && (
+                  <PaymentMethodsEditor methods={controller.footerPayments} onChange={controller.setFooterPayments} />
+                )}
+              </div>
+            </div>
+          )}
         </div>
-      </Panel>
+      </div>
     </div>
   );
 }
@@ -777,13 +789,13 @@ function SimpleFeatureItemsEditor({
       items={items}
       onChange={onChange}
       makeItem={() => ({ id: makeId('feature'), title: '', subtitle: '', isVisible: true })}
-      getLabel={(item) => item.title || 'Untitled item'}
+      getLabel={(item) => item.title || 'عنصر بدون عنوان'}
       renderFields={(item, index, next) => (
         <div className="grid gap-3 md:grid-cols-2">
-          <Field label="Title">
+          <Field label="العنوان">
             <input className={textInputClass()} value={item.title} onChange={(e) => next(index, { ...item, title: e.target.value })} />
           </Field>
-          <Field label="Subtitle">
+          <Field label="العنوان الفرعي">
             <input className={textInputClass()} value={item.subtitle} onChange={(e) => next(index, { ...item, subtitle: e.target.value })} />
           </Field>
         </div>
@@ -827,7 +839,7 @@ function SimpleNameListEditor<T extends { id: string; isVisible: boolean }>({
           className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
           onClick={() => onChange([...items, makeItem()])}
         >
-          <Plus className="h-4 w-4" /> Add
+          <Plus className="h-4 w-4" /> إضافة عنصر
         </button>
       </div>
 
@@ -846,7 +858,7 @@ function SimpleNameListEditor<T extends { id: string; isVisible: boolean }>({
                     checked={item.isVisible}
                     onChange={(e) => updateAt(index, { ...item, isVisible: e.target.checked })}
                   />
-                  Visible
+                  مرئي
                 </label>
                 <RowActions
                   index={index}
@@ -861,7 +873,7 @@ function SimpleNameListEditor<T extends { id: string; isVisible: boolean }>({
         ))}
         {items.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-(--border) bg-(--d3) px-4 py-6 text-sm text-(--muted2)">
-            Nothing here yet. Add one to start.
+            لا توجد عناصر بعد. أضف واحدة للبدء.
           </div>
         ) : null}
       </div>
@@ -880,8 +892,8 @@ function PromoCardsEditor({ cards, onChange }: { cards: PromoCard[]; onChange: (
     <div className="rounded-3xl border border-slate-200 bg-white p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold text-slate-900">Promo cards</div>
-          <div className="text-xs text-slate-500">Homepage promo grid cards.</div>
+          <div className="text-sm font-semibold text-slate-900">البطاقات الترويجية</div>
+          <div className="text-xs text-slate-500">شبكة العروض الترويجية للصفحة الرئيسية.</div>
         </div>
         <button
           type="button"
@@ -902,7 +914,7 @@ function PromoCardsEditor({ cards, onChange }: { cards: PromoCard[]; onChange: (
             ])
           }
         >
-          <Plus className="h-4 w-4" /> Add card
+          <Plus className="h-4 w-4" /> إضافة بطاقة
         </button>
       </div>
 
@@ -911,7 +923,7 @@ function PromoCardsEditor({ cards, onChange }: { cards: PromoCard[]; onChange: (
           <div key={card.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <div className="truncate text-sm font-semibold text-slate-900">{card.title || 'Untitled card'}</div>
+                <div className="truncate text-sm font-semibold text-slate-900">{card.title || 'بطاقة بدون عنوان'}</div>
                 <div className="text-xs text-slate-500">ID: {card.id}</div>
               </div>
               <div className="flex items-center gap-3">
@@ -921,7 +933,7 @@ function PromoCardsEditor({ cards, onChange }: { cards: PromoCard[]; onChange: (
                     checked={card.isVisible}
                     onChange={(e) => updateAt(index, { ...card, isVisible: e.target.checked })}
                   />
-                  Visible
+                  مرئي
                 </label>
                 <RowActions
                   index={index}
@@ -933,31 +945,31 @@ function PromoCardsEditor({ cards, onChange }: { cards: PromoCard[]; onChange: (
             </div>
 
             <div className="grid gap-3 md:grid-cols-2">
-              <Field label="Size">
+              <Field label="الحجم">
                 <select className={textInputClass()} value={card.size} onChange={(e) => updateAt(index, { ...card, size: e.target.value as PromoCard['size'] })}>
-                  <option value="main">Main</option>
-                  <option value="small">Small</option>
+                  <option value="main">رئيسي</option>
+                  <option value="small">صغير</option>
                 </select>
               </Field>
-              <Field label="Theme">
+              <Field label="اللون">
                 <select className={textInputClass()} value={card.theme} onChange={(e) => updateAt(index, { ...card, theme: e.target.value as PromoCard['theme'] })}>
-                  <option value="orange">Orange</option>
-                  <option value="green">Green</option>
-                  <option value="blue">Blue</option>
-                  <option value="gold">Gold</option>
-                  <option value="red">Red</option>
+                  <option value="orange">برتقالي</option>
+                  <option value="green">أخضر</option>
+                  <option value="blue">أزرق</option>
+                  <option value="gold">ذهبي</option>
+                  <option value="red">أحمر</option>
                 </select>
               </Field>
-              <Field label="Tag">
+              <Field label="الوسم">
                 <input className={textInputClass()} value={card.tag} onChange={(e) => updateAt(index, { ...card, tag: e.target.value })} />
               </Field>
-              <Field label="Title">
+              <Field label="العنوان">
                 <input className={textInputClass()} value={card.title} onChange={(e) => updateAt(index, { ...card, title: e.target.value })} />
               </Field>
-              <Field label="Subtitle (optional)">
+              <Field label="العنوان الفرعي (اختياري)">
                 <input className={textInputClass()} value={card.subtitle ?? ''} onChange={(e) => updateAt(index, { ...card, subtitle: e.target.value })} />
               </Field>
-              <Field label="Href">
+              <Field label="الرابط">
                 <input className={textInputClass()} value={card.href} onChange={(e) => updateAt(index, { ...card, href: e.target.value })} />
               </Field>
             </div>
@@ -965,7 +977,7 @@ function PromoCardsEditor({ cards, onChange }: { cards: PromoCard[]; onChange: (
         ))}
         {cards.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-(--border) bg-(--d3) px-4 py-6 text-sm text-(--muted2)">
-            No promo cards yet. Add one to start.
+            لا توجد بطاقات ترويجية بعد. أضف واحدة للبدء.
           </div>
         ) : null}
       </div>
@@ -1013,7 +1025,7 @@ function LinksEditor<T extends SiteLink>({
             ])
           }
         >
-          <Plus className="h-4 w-4" /> Add link
+          <Plus className="h-4 w-4" /> إضافة رابط
         </button>
       </div>
 
@@ -1022,7 +1034,7 @@ function LinksEditor<T extends SiteLink>({
           <div key={link.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <div className="truncate text-sm font-semibold text-slate-900">{link.label || 'Untitled link'}</div>
+                <div className="truncate text-sm font-semibold text-slate-900">{link.label || 'رابط بدون عنوان'}</div>
                 <div className="text-xs text-slate-500">ID: {link.id}</div>
               </div>
               <div className="flex items-center gap-3">
@@ -1032,7 +1044,7 @@ function LinksEditor<T extends SiteLink>({
                     checked={link.isVisible}
                     onChange={(e) => updateAt(index, { ...link, isVisible: e.target.checked })}
                   />
-                  Visible
+                  مرئي
                 </label>
                 <RowActions
                   index={index}
@@ -1044,13 +1056,13 @@ function LinksEditor<T extends SiteLink>({
             </div>
 
             <div className="grid gap-3 md:grid-cols-3">
-              <Field label="Label">
+              <Field label="العنوان">
                 <input className={textInputClass()} value={link.label} onChange={(e) => updateAt(index, { ...link, label: e.target.value })} />
               </Field>
-              <Field label="Href">
+              <Field label="الرابط">
                 <input className={textInputClass()} value={link.href} onChange={(e) => updateAt(index, { ...link, href: e.target.value })} />
               </Field>
-              <Field label="Badge (optional)">
+              <Field label="البارك (اختياري)">
                 <input className={textInputClass()} value={link.badge ?? ''} onChange={(e) => updateAt(index, { ...link, badge: e.target.value || undefined })} />
               </Field>
             </div>
@@ -1058,7 +1070,7 @@ function LinksEditor<T extends SiteLink>({
         ))}
         {links.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-600">
-            No links yet. Add one to start.
+            لا توجد روابط بعد. أضف رابطاً للبدء.
           </div>
         ) : null}
       </div>
@@ -1077,8 +1089,8 @@ function FooterContactsEditor({ items, onChange }: { items: FooterContactItem[];
     <div className="rounded-3xl border border-slate-200 bg-white p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold text-slate-900">Footer contacts</div>
-          <div className="text-xs text-slate-500">Contact rows in the footer.</div>
+          <div className="text-sm font-semibold text-slate-900">بيانات الاتصال</div>
+          <div className="text-xs text-slate-500">معلومات التواصل في أسفل الصفحة.</div>
         </div>
         <button
           type="button"
@@ -1090,7 +1102,7 @@ function FooterContactsEditor({ items, onChange }: { items: FooterContactItem[];
             ])
           }
         >
-          <Plus className="h-4 w-4" /> Add contact
+          <Plus className="h-4 w-4" /> إضافة بيانات اتصال
         </button>
       </div>
 
@@ -1099,7 +1111,7 @@ function FooterContactsEditor({ items, onChange }: { items: FooterContactItem[];
           <div key={item.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <div className="truncate text-sm font-semibold text-slate-900">{item.label || 'Untitled contact'}</div>
+                <div className="truncate text-sm font-semibold text-slate-900">{item.label || 'جهة اتصال بدون عنوان'}</div>
                 <div className="text-xs text-slate-500">ID: {item.id}</div>
               </div>
               <div className="flex items-center gap-3">
@@ -1109,7 +1121,7 @@ function FooterContactsEditor({ items, onChange }: { items: FooterContactItem[];
                     checked={item.isVisible}
                     onChange={(e) => updateAt(index, { ...item, isVisible: e.target.checked })}
                   />
-                  Visible
+                  مرئي
                 </label>
                 <RowActions
                   index={index}
@@ -1121,13 +1133,13 @@ function FooterContactsEditor({ items, onChange }: { items: FooterContactItem[];
             </div>
 
             <div className="grid gap-3 md:grid-cols-3">
-              <Field label="Label">
+              <Field label="العنوان">
                 <input className={textInputClass()} value={item.label} onChange={(e) => updateAt(index, { ...item, label: e.target.value })} />
               </Field>
-              <Field label="Value">
+              <Field label="القيمة">
                 <input className={textInputClass()} value={item.value} onChange={(e) => updateAt(index, { ...item, value: e.target.value })} />
               </Field>
-              <Field label="Href (optional)">
+              <Field label="الرابط (اختياري)">
                 <input className={textInputClass()} value={item.href ?? ''} onChange={(e) => updateAt(index, { ...item, href: e.target.value || undefined })} />
               </Field>
             </div>
@@ -1135,7 +1147,7 @@ function FooterContactsEditor({ items, onChange }: { items: FooterContactItem[];
         ))}
         {items.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-600">
-            No contacts yet. Add one to start.
+            لا توجد بيانات اتصال بعد. أضف واحدة للبدء.
           </div>
         ) : null}
       </div>
@@ -1161,8 +1173,8 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
     <div className="rounded-3xl border border-slate-200 bg-white p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold text-slate-900">Footer columns</div>
-          <div className="text-xs text-slate-500">Footer link groups (each column contains links).</div>
+          <div className="text-sm font-semibold text-slate-900">روابط أسفل الصفحة</div>
+          <div className="text-xs text-slate-500">مجموعات الروابط السفلية (كل عمود يحتوي على روابط).</div>
         </div>
         <button
           type="button"
@@ -1174,7 +1186,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
             ])
           }
         >
-          <Plus className="h-4 w-4" /> Add column
+          <Plus className="h-4 w-4" /> إضافة عمود
         </button>
       </div>
 
@@ -1183,7 +1195,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
           <div key={column.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <div className="truncate text-sm font-semibold text-slate-900">{column.title || 'Untitled column'}</div>
+                <div className="truncate text-sm font-semibold text-slate-900">{column.title || 'عمود بدون عنوان'}</div>
                 <div className="text-xs text-slate-500">ID: {column.id}</div>
               </div>
               <div className="flex items-center gap-3">
@@ -1193,7 +1205,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
                     checked={column.isVisible}
                     onChange={(e) => updateAt(index, { ...column, isVisible: e.target.checked })}
                   />
-                  Visible
+                  مرئي
                 </label>
                 <RowActions
                   index={index}
@@ -1205,7 +1217,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
             </div>
 
             <div className="grid gap-3 md:grid-cols-2">
-              <Field label="Title">
+              <Field label="العنوان">
                 <input className={textInputClass()} value={column.title} onChange={(e) => updateAt(index, { ...column, title: e.target.value })} />
               </Field>
               <div className="flex items-end justify-end">
@@ -1214,7 +1226,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
                   className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                   onClick={() => updateAt(index, { ...column, links: [...column.links, { id: makeId('link'), label: '', href: '', isVisible: true }] })}
                 >
-                  <Plus className="h-4 w-4" /> Add link
+                  <Plus className="h-4 w-4" /> إضافة رابط
                 </button>
               </div>
             </div>
@@ -1224,7 +1236,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
                 <div key={link.id} className="rounded-2xl border border-slate-200 bg-white p-3">
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="truncate text-sm font-semibold text-slate-900">{link.label || 'Untitled link'}</div>
+                      <div className="truncate text-sm font-semibold text-slate-900">{link.label || 'رابط بدون عنوان'}</div>
                       <div className="text-xs text-slate-500">ID: {link.id}</div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1234,7 +1246,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
                           checked={link.isVisible}
                           onChange={(e) => updateLinkAt(index, linkIndex, { ...link, isVisible: e.target.checked })}
                         />
-                        Visible
+                        مرئي
                       </label>
                       <RowActions
                         index={linkIndex}
@@ -1246,10 +1258,10 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
                   </div>
 
                   <div className="grid gap-3 md:grid-cols-2">
-                    <Field label="Label">
+                    <Field label="العنوان">
                       <input className={textInputClass()} value={link.label} onChange={(e) => updateLinkAt(index, linkIndex, { ...link, label: e.target.value })} />
                     </Field>
-                    <Field label="Href">
+                    <Field label="الرابط">
                       <input className={textInputClass()} value={link.href} onChange={(e) => updateLinkAt(index, linkIndex, { ...link, href: e.target.value })} />
                     </Field>
                   </div>
@@ -1258,7 +1270,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
 
               {column.links.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-4 text-sm text-slate-600">
-                  No links in this column yet.
+                  لا توجد روابط في هذا العمود بعد.
                 </div>
               ) : null}
             </div>
@@ -1267,7 +1279,7 @@ function FooterColumnsEditor({ columns, onChange }: { columns: FooterColumn[]; o
 
         {columns.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-600">
-            No columns yet. Add one to start.
+            لا توجد أعمدة بعد. أضف واحدة للبدء.
           </div>
         ) : null}
       </div>
@@ -1286,15 +1298,15 @@ function PaymentMethodsEditor({ methods, onChange }: { methods: string[]; onChan
     <div className="rounded-3xl border border-slate-200 bg-white p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold text-slate-900">Payment methods</div>
-          <div className="text-xs text-slate-500">Strings used to render payment method chips/icons.</div>
+          <div className="text-sm font-semibold text-slate-900">طرق الدفع</div>
+          <div className="text-xs text-slate-500">النصوص المستخدمة لعرض أيقونات طرق الدفع.</div>
         </div>
         <button
           type="button"
           className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
           onClick={() => onChange([...methods, ''])}
         >
-          <Plus className="h-4 w-4" /> Add method
+          <Plus className="h-4 w-4" /> إضافة طريقة دفع
         </button>
       </div>
 
@@ -1314,7 +1326,7 @@ function PaymentMethodsEditor({ methods, onChange }: { methods: string[]; onChan
         ))}
         {methods.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-sm text-slate-600">
-            No payment methods yet. Add one to start.
+            لا توجد طرق دفع بعد. أضف واحدة للبدء.
           </div>
         ) : null}
       </div>
@@ -1325,27 +1337,27 @@ function PaymentMethodsEditor({ methods, onChange }: { methods: string[]; onChan
 function CertificatesEditor({ items, onChange }: { items: Array<{ id: string; name: string; description: string; theme: 'gold' | 'blue' | 'green' | 'orange'; isVisible: boolean }>; onChange: (items: any[]) => void }) {
   return (
     <SimpleNameListEditor
-      title="Certificates"
-      description="Certificates/assurances shown on the homepage."
+      title="الشهادات والضمانات"
+      description="الشهادات وضمانات الثقة المعروضة في الصفحة الرئيسية."
       items={items}
       onChange={onChange}
       makeItem={() => ({ id: makeId('cert'), name: '', description: '', theme: 'gold', isVisible: true })}
-      getLabel={(item) => item.name || 'Untitled certificate'}
+      getLabel={(item) => item.name || 'شهادة بدون عنوان'}
       renderFields={(item, index, next) => (
         <div className="grid gap-3 md:grid-cols-2">
-          <Field label="Name">
+          <Field label="الاسم">
             <input className={textInputClass()} value={item.name} onChange={(e) => next(index, { ...item, name: e.target.value })} />
           </Field>
-          <Field label="Theme">
+          <Field label="النمط">
             <select className={textInputClass()} value={item.theme} onChange={(e) => next(index, { ...item, theme: e.target.value })}>
-              <option value="gold">Gold</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
-              <option value="orange">Orange</option>
+              <option value="gold">ذهبي</option>
+              <option value="blue">أزرق</option>
+              <option value="green">أخضر</option>
+              <option value="orange">برتقالي</option>
             </select>
           </Field>
           <div className="md:col-span-2">
-            <Field label="Description">
+            <Field label="الوصف">
               <input className={textInputClass()} value={item.description} onChange={(e) => next(index, { ...item, description: e.target.value })} />
             </Field>
           </div>
@@ -1358,15 +1370,15 @@ function CertificatesEditor({ items, onChange }: { items: Array<{ id: string; na
 function StatsEditor({ items, onChange }: { items: Array<{ id: string; value: number; suffix: string; label: string; isVisible: boolean }>; onChange: (items: any[]) => void }) {
   return (
     <SimpleNameListEditor
-      title="Stats"
-      description="Homepage stats counters."
+      title="الإحصائيات"
+      description="عدادات الأرقام في الصفحة الرئيسية."
       items={items}
       onChange={onChange}
       makeItem={() => ({ id: makeId('stat'), value: 0, suffix: '', label: '', isVisible: true })}
-      getLabel={(item) => item.label || 'Untitled stat'}
+      getLabel={(item) => item.label || 'إحصائية بدون عنوان'}
       renderFields={(item, index, next) => (
         <div className="grid gap-3 md:grid-cols-3">
-          <Field label="Value">
+          <Field label="القيمة">
             <input
               type="number"
               className={textInputClass()}
@@ -1374,10 +1386,10 @@ function StatsEditor({ items, onChange }: { items: Array<{ id: string; value: nu
               onChange={(e) => next(index, { ...item, value: Number(e.target.value) })}
             />
           </Field>
-          <Field label="Suffix">
+          <Field label="اللاحقة">
             <input className={textInputClass()} value={item.suffix} onChange={(e) => next(index, { ...item, suffix: e.target.value })} />
           </Field>
-          <Field label="Label">
+          <Field label="العنوان">
             <input className={textInputClass()} value={item.label} onChange={(e) => next(index, { ...item, label: e.target.value })} />
           </Field>
         </div>

@@ -6,6 +6,7 @@ import { catalogApi } from './catalog';
 import { commerceApi } from './commerce';
 import { imageRegistryApi } from './imageRegistry';
 import { siteContentApi } from './siteContent';
+import { diagnosticCheckDatabase } from './shared';
 
 export const api = {
   ...catalogApi,
@@ -13,6 +14,9 @@ export const api = {
   ...commerceApi,
   ...siteContentApi,
   imageRegistry: imageRegistryApi,
+  diagnostic: {
+    checkDatabase: diagnosticCheckDatabase,
+  },
 };
 
 export const apiMeta = {

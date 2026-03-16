@@ -122,6 +122,11 @@ export const accountsApi = {
     getByUserId: async (userId: string): Promise<User | null> =>
       fromSupabaseOrFallback(
         async () => {
+          // Skip Supabase for demo users
+          if (userId.startsWith('demo-')) {
+            return loadProfileFromFallback(userId);
+          }
+
           const { data, error } = await supabase
             .from('profiles')
             .select('*')
@@ -140,14 +145,33 @@ export const accountsApi = {
     upsert: async (userId: string, profile: Partial<User>): Promise<User> =>
       fromSupabaseOrFallback(
         async () => {
-          const current = await accountsApi.users.getCurrent();
+          // Skip Supabase for demo users
+          if (userId.startsWith('demo-')) {
+            const existing = loadProfileFromFallback(userId) ?? {
+              id: userId,
+              email: profile.email ?? '',
+              name: profile.name ?? 'مستخدم الريان',
+              role: profile.role ?? 'customer',
+              createdAt: new Date().toISOString(),
+            };
+            const nextProfile = UserSchema.parse({
+              ...existing,
+              ...profile,
+              updatedAt: new Date().toISOString(),
+            });
+            saveFallbackProfile(nextProfile);
+            return nextProfile;
+          }
+
+          // Avoid N+1: get existing profile first instead of calling getCurrent again
+          const existing = await accountsApi.profiles.getByUserId(userId);
           const payload = {
             id: userId,
-            email: profile.email ?? current?.email ?? '',
-            name: profile.name ?? current?.name ?? 'مستخدم الريان',
-            role: profile.role ?? current?.role ?? 'customer',
-            phone: profile.phone ?? current?.phone ?? null,
-            company: profile.company ?? current?.company ?? null,
+            email: profile.email ?? existing?.email ?? '',
+            name: profile.name ?? existing?.name ?? 'مستخدم الريان',
+            role: profile.role ?? existing?.role ?? 'customer',
+            phone: profile.phone ?? existing?.phone ?? null,
+            company: profile.company ?? existing?.company ?? null,
           };
           const { data, error } = await supabase.from('profiles').upsert(payload).select('*').single();
 
@@ -179,6 +203,11 @@ export const accountsApi = {
     getDefault: async (userId: string): Promise<Address | null> =>
       fromSupabaseOrFallback(
         async () => {
+          // Skip Supabase for demo users
+          if (userId.startsWith('demo-')) {
+            return getStoredAddresses().find((address) => address.userId === userId && address.isDefault) ?? null;
+          }
+
           const { data, error } = await supabase
             .from('addresses')
             .select('*')
@@ -198,6 +227,27 @@ export const accountsApi = {
     upsertDefault: async (userId: string, address: Address): Promise<Address> =>
       fromSupabaseOrFallback(
         async () => {
+          // Skip Supabase for demo users
+          if (userId.startsWith('demo-')) {
+            const nextAddress = AddressSchema.parse({
+              ...address,
+              id: address.id ?? `${userId}-default`,
+              userId,
+              isDefault: true,
+              updatedAt: new Date().toISOString(),
+              createdAt: address.createdAt ?? new Date().toISOString(),
+            });
+
+            const nextAddresses = [
+              nextAddress,
+              ...getStoredAddresses()
+                .filter((entry) => entry.userId !== userId)
+                .map((entry) => ({ ...entry, isDefault: false })),
+            ];
+            setStoredAddresses(nextAddresses);
+            return nextAddress;
+          }
+
           await supabase.from('addresses').update({ is_default: false }).eq('user_id', userId);
 
           const payload = {
@@ -240,7 +290,6 @@ export const accountsApi = {
               .filter((entry) => entry.userId !== userId)
               .map((entry) => ({ ...entry, isDefault: false })),
           ];
-          writeStorage(ADDRESSES_STORAGE_KEY, nextAddresses);
           setStoredAddresses(nextAddresses);
           return nextAddress;
         },

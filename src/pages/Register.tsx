@@ -82,6 +82,7 @@ export default function Register() {
             <label className="text-sm font-semibold text-(--chrome)">كلمة المرور</label>
             <input
               type="password"
+              autoComplete="new-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="bg-(--d3) border border-(--border) text-white px-4 py-3 rounded-lg outline-none focus:border-(--o) transition-colors"
@@ -109,6 +110,7 @@ export default function Register() {
             <label className="text-sm font-semibold text-(--chrome)">تأكيد كلمة المرور</label>
             <input
               type="password"
+              autoComplete="new-password"
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.target.value)}
               className="bg-(--d3) border border-(--border) text-white px-4 py-3 rounded-lg outline-none focus:border-(--o) transition-colors"
